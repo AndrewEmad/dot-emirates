@@ -172,18 +172,214 @@
         $opts["apple"]       = sanitize_text_field($_POST['de_option_apple']);
         $opts["logo"]           = esc_url_raw($_POST['de_option_logo']);
 
-        update_option('de_opts',$opts);
+        update_option('de_opts', $opts);
         wp_redirect( admin_url('admin.php?page=de_theme_opts&status=1'));
 
 
     }
 
+    /*
+     * Return the relative date instead of plain date
+     * author: Andrew Emad
+     */
+    function wp_relative_date() {
+        $seconds = current_time( 'timestamp' ) - get_the_time('U') ;
+        $minutes = $seconds * 1.0 / 60;
+        $hours = $minutes *1.0 / 60;
+        $days = $hours / 24;
+        $months = $days / 30;
+        $years = $months / 12;
+        if($minutes < 2){
+            return "منذ دقيقة";
+        }
+        else if($minutes < 3){
+            return "منذ دقيقتين";
+        }
+        else if($minutes < 11){
+            return "منذ ".floor($minutes)." دقائق";
+        }
+        else if($hours < 1){
+            return "منذ ". floor($minutes) ." دقيقة";
+        }
+        
+        else if($hours < 2){
+            return "منذ ساعة";
+        }
+        
+        else if($hours < 3){
+            return "منذ ساعتين";
+        }
+        else if($hours < 11){
+            return "منذ ".floor($hours)." ساعات";
+        }
+        else if($days < 1){
+            return "منذ ".floor($hours)." ساعة";
+        }
+        else if($days < 2){
+            return "منذ يوم";
+        }
+        else if($days < 3){
+            return "منذ يومين";
+        }
+        else if($days < 11){
+            return "منذ ".floor($days)." ايام";
+        }
+        else if($months < 1){
+            return "منذ ".floor($days)." يوم";
+        }
+        else if($months < 2){
+            return "منذ شهر";
+        }
+        else if($months < 3){
+            return "منذ شهرين";
+        }
+        else if($months < 11){
+            return "منذ ".floor($months)." اشهر";
+        }
+        else if($years < 1){
+            return "منذ ".floor($months)." شهر";
+        }
+        else if($years < 2){
+            return "منذ سنة";
+        }
+        else if($years < 3){
+            return "منذ سنتين";
+        }
+        else if($years < 11){
+            return "منذ ".floor($years)." سنوات";
+        }
+        else if($years >= 11){
+            return "منذ ".floor($years)." سنين";
+        }
+        
+      }
+      
+    /*
+    * Custom length for excerpt
+    * author: Andrew Emad
+    */
+    function custom_excerpt_length( $length ) {
+        return 50;
+    }
+
+    /*
+    * Create Custom Post Types
+    * author: Andrew Emad
+    */
+ 
+    function create_post_types() {
+ 
+        // Set UI labels for Custom Post Type
+        $labels = array(
+            'name'                => 'Videos',
+            'singular_name'       =>'Video',
+            'menu_name'           => 'Videos',
+            'parent_item_colon'   => 'Parent Video',
+            'all_items'           => 'All Videos',
+            'view_item'           => 'View Video',
+            'add_new_item'        => 'Add New Video',
+            'add_new'             => 'Add New',
+            'edit_item'           => 'Edit Video',
+            'update_item'         => 'Update Video',
+            'search_items'        => 'Search Video',
+            'not_found'           => 'Not Found',
+            'not_found_in_trash'  => 'Not found in Trash',
+        );
+         
+        // Set other options for Custom Post Type
+         
+        $args = array(
+            'label'               => 'Videos',
+            'description'         => 'Video news and reviews',
+            'labels'              => $labels,
+            // Features this CPT supports in Post Editor
+            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+            // You can associate this CPT with a taxonomy or custom taxonomy. 
+            'taxonomies'          => array( 'genres', 'category' ),
+            /* A hierarchical CPT is like Pages and can have
+            * Parent and child items. A non-hierarchical CPT
+            * is like Posts.
+            */ 
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'page',
+        );
+         
+        // Registering your Custom Post Type
+        register_post_type( 'Videos', $args );
+
+
+        // Blog Post Type
+        $labels = array(
+            'name'                => 'Articles',
+            'singular_name'       =>'Article',
+            'menu_name'           => 'Articles',
+            'parent_item_colon'   => 'Parent Article',
+            'all_items'           => 'All Articles',
+            'view_item'           => 'View Article',
+            'add_new_item'        => 'Add New Article',
+            'add_new'             => 'Add New',
+            'edit_item'           => 'Edit Article',
+            'update_item'         => 'Update Article',
+            'search_items'        => 'Search Article',
+            'not_found'           => 'Not Found',
+            'not_found_in_trash'  => 'Not found in Trash',
+        );
+         
+        // Set other options for Custom Post Type
+         
+        $args = array(
+            'label'               => 'Articles',
+            'description'         => 'Article news and reviews',
+            'labels'              => $labels,
+            // Features this CPT supports in Post Editor
+            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+            // You can associate this CPT with a taxonomy or custom taxonomy. 
+            'taxonomies'          => array( 'genres', 'category' ),
+            /* A hierarchical CPT is like Pages and can have
+            * Parent and child items. A non-hierarchical CPT
+            * is like Posts.
+            */ 
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'page',
+        );
+         
+        // Registering your Custom Post Type
+        register_post_type( 'Articles', $args );
+    }
+
+
+    
+
     // Actions & Filters
     add_action('wp_enqueue_scripts', 'de_enqueue');
-    add_action('after_setup_theme','de_theme_setup');
+    add_action('after_setup_theme', 'de_theme_setup');
     add_action('after_switch_theme', 'de_activate');
-    add_action('admin_menu','de_options_menu');
-    add_action('admin_init','de_admin_init');
+    add_action('admin_menu', 'de_options_menu');
+    add_action('admin_init', 'de_admin_init');
+    add_action( 'init', 'create_post_types' );
+    add_filter( 'get_the_date', 'wp_relative_date' ); // for posts
+    add_filter( 'get_comment_date', 'wp_relative_date' ); // for comments
+    add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
     // Supports
     add_theme_support( 'menus' );

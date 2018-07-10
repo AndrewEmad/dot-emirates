@@ -1,569 +1,411 @@
 <?php get_header(); ?>
+
 	<div class="mainContent">
 		<div class="gridContainer">
+		<div class="oneSection">
+			<div class="myrow clearfix">
 		<?php 
+		$first_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'		=> 3
+		));
 		
-		if ( have_posts() ) {
-			$count = 0;
-		 	while ( have_posts() ) {
-				the_post();
-
-				//First Section
-				if(wp_count_posts() >= 3 ){
+		if ( $first_section->have_posts() ) {
+		 	while ( $first_section->have_posts() ) {
+				$first_section->the_post();
 					?>
-						<div class="oneSection">
-							<div class="myrow clearfix">
-								<div class="<?php echo ($count == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
-									<div class="mainPost <?php if($count == 0){echo 'big';} ?>">
+						
+								<div class="<?php echo ($first_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
+									<div class="mainPost <?php if($first_section->current_post == 0){ echo 'big';} ?>">
 										<div class="top">
-											<div class="img"><img src="<?php echo get_the_post_thumbnail_url(); ?>" alt=""></div>
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php the_title() ?></div>
-												<div>منذ دقيقة</div>
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-										<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
 										<div class="content">
-											<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-											<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
 											<div class="sectionAndSocial clearfix">
-												<div class="section">العالم</div>
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
 												<div class="mainSocial pullLeft">
 													<a href="#"><i class="icon-telegram"></i></a>
-													<a href="#"><i class="icon-twitter"></i></a>
-													<a href="#"><i class="icon-facebook"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-
-								<div class="mycol-lg-3 mycol-sm-6">
-									<div class="mainPost">
-										<div class="top">
-											<div class="img"><img src="images/source.jpg" alt=""></div>
-											<div class="data">
-												<div class="source">الإمارات اليوم</div>
-												<div>منذ دقيقة</div>
-											</div>
-										</div>
-										<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-										<div class="content">
-											<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-											<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-											<div class="sectionAndSocial clearfix">
-												<div class="section">العالم</div>
-												<div class="mainSocial pullLeft">
-													<a href="#"><i class="icon-telegram"></i></a>
-													<a href="#"><i class="icon-twitter"></i></a>
-													<a href="#"><i class="icon-facebook"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="mycol-lg-3 mycol-sm-6">
-									<div class="mainPost">
-										<div class="top">
-											<div class="img"><img src="images/source.jpg" alt=""></div>
-											<div class="data">
-												<div class="source">الإمارات اليوم</div>
-												<div>منذ دقيقة</div>
-											</div>
-										</div>
-										<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-										<div class="content">
-											<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-											<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-											<div class="sectionAndSocial clearfix">
-												<div class="section">العالم</div>
-												<div class="mainSocial pullLeft">
-													<a href="#"><i class="icon-telegram"></i></a>
-													<a href="#"><i class="icon-twitter"></i></a>
-													<a href="#"><i class="icon-facebook"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
-
+								
 					<?php
-				}
-
-
-
-
-				$count+=1;
 			} 
 		 }
 		 
-?>
-
-
-
-			
-			<hr>
-			
-			<div class="oneSection">
-				<div class="myrow clearfix">
-
-					<div class="mycol-lg-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
+	?>
+		</div>
+	</div>
+	<hr>
+	<div class="oneSection">
+		<div class="myrow clearfix">
+	<?php 
+		$second_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'		=> 3,
+			'offset'			=>3
+		));
+		if ( $second_section->have_posts() ) {
+		 	while ( $second_section->have_posts() ) {
+				$second_section->the_post();
+					?>
+						
+								<div class="<?php echo ($second_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
+									<div class="mainPost small">
+										<div class="top">
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="data">
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
+											</div>
+										</div>
+			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a><?php } ?>
+										<div class="content">
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
+											<div class="sectionAndSocial clearfix">
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
+												<div class="mainSocial pullLeft">
+													<a href="#"><i class="icon-telegram"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php
+			} 
+		 }
+		 
+	?>
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-			
-			<hr>
-			
+		</div>
+	</div>
+	<hr>
+	<?php 
+		$wide_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'	=> 1,
+			'offset'			=> 6
+		));
+		if ( $wide_section->have_posts() ) {
+				$wide_section->the_post();?>
 			<div class="widePost">
-				<a href="#" class="avatar"><img src="images/3.jpg" class="bgCover" alt=""></a>
+				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
 						<div class="top">
-							<div class="img"><img src="images/source.jpg" alt=""></div>
+							<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
 							<div class="data">
-								<div class="source">الإمارات اليوم</div>
-								<div>منذ دقيقة</div>
+								<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+								<div><?php echo get_the_date()?></div>
 							</div>
 						</div>
-						<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
+						<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 						<div class="mainSocial pullLeft">
 							<a href="#"><i class="icon-telegram"></i></a>
-							<a href="#"><i class="icon-twitter"></i></a>
-							<a href="#"><i class="icon-facebook"></i></a>
+							<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+							<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+			<?php } ?>
 			<hr>
-			
-			<div class="oneSection">
-				<div class="myrow clearfix">
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
+	<div class="oneSection">
+		<div class="myrow clearfix">
+	<?php 
+		$third_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'	=> 4,
+			'offset'			=> 7
+		));
+		if ( $third_section->have_posts() ) {
+		 	while ( $third_section->have_posts() ) {
+				$third_section->the_post();
+					?>
+						
+								<div class="mycol-lg-3 mycol-sm-6">
+									<div class="mainPost small">
+										<div class="top">
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="data">
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
+											</div>
+										</div>
+										<div class="content">
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
+											<div class="sectionAndSocial clearfix">
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
+												<div class="mainSocial pullLeft">
+													<a href="#"><i class="icon-telegram"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php
+			} 
+		 }
+		 
+	?>
 
-				</div>
-			</div>
-			
-			<hr>
-			
-			<div class="oneSection">
-				<div class="myrow clearfix">
+		</div>
+	</div>
 
-					<div class="mycol-lg-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
+	<hr />
+
+	<div class="oneSection">
+		<div class="myrow clearfix">
+	<?php 
+		$fourth_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'	=> 2,
+			'offset'			=> 11
+		));
+		if ( $fourth_section->have_posts() ) {
+		 	while ( $fourth_section->have_posts() ) {
+				$fourth_section->the_post();
+					?>
+						
+								<div class="mycol-lg-6">
+									<div class="mainPost small">
+										<div class="top">
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="data">
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
+											</div>
+										</div>
+			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<div class="content">
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
+											<div class="sectionAndSocial clearfix">
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
+												<div class="mainSocial pullLeft">
+													<a href="#"><i class="icon-telegram"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="mycol-lg-6">
-						<div class="mainPost small">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
+					<?php
+			} 
+		 }
+		 
+	?>
+
+		</div>
+	</div>
+	<hr>
+<div class="oneSection">
+							<div class="myrow clearfix">
+	<?php 
+		$fifth_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'	=> 4,
+			'offset'			=> 13
+		));
+		if ( $fifth_section->have_posts() ) {
+		 	while ( $fifth_section->have_posts() ) {
+				$fifth_section->the_post();
+					?>
+						
+								<div class="mycol-lg-3 mycol-sm-6">
+									<div class="mainPost">
+										<div class="top">
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="data">
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
+											</div>
+										</div>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+
+										<div class="content">
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
+											<div class="sectionAndSocial clearfix">
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
+												<div class="mainSocial pullLeft">
+													<a href="#"><i class="icon-telegram"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
 
-				</div>
-			</div>
-			
-			<hr>
-			
-			<div class="oneSection">
-				<div class="myrow clearfix">
+					<?php
+			} 
+		 }
+		 
+	?>
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+		</div>
+	</div>
+	
+	<hr>
 
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="mycol-lg-3 mycol-sm-6">
-						<div class="mainPost">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/2.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-			
-			<hr>
-			
+	<?php 
+		$video_section = new WP_Query(array(
+			'post_type' 		=> 'videos',
+			'posts_per_page'	=> 1
+		));
+		if ( $video_section->have_posts() ) {
+				$video_section->the_post();?>
 			<div class="widePost">
-				<a href="#" class="avatar"><img src="images/4.jpg" class="bgCover" alt=""></a>
+				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
 						<div class="top">
-							<div class="img"><img src="images/source.jpg" alt=""></div>
+							<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
 							<div class="data">
-								<div class="source">الإمارات اليوم</div>
-								<div>منذ دقيقة</div>
+								<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+								<div><?php echo get_the_date()?></div>
 							</div>
 						</div>
-						<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
+						<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 						<div class="mainSocial pullLeft">
 							<a href="#"><i class="icon-telegram"></i></a>
-							<a href="#"><i class="icon-twitter"></i></a>
-							<a href="#"><i class="icon-facebook"></i></a>
+							<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+							<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
 						</div>
+						<div class="playIcon"><i class="icon-arrow-dir-right"></i></div>
+
 					</div>
-					<div class="playIcon"><i class="icon-arrow-dir-right"></i></div>
 				</div>
 			</div>
-			
+			<?php } ?>
 			<hr>
-			
-			<div class="oneSection">
-				<div class="myrow clearfix">
 
-					<div class="mycol-lg-6">
-						<div class="mainPost big">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
+	<div class="oneSection">
+		<div class="myrow clearfix">
+	<?php 
+		$last_section = new WP_Query(array(
+			'post_type' 		=> 'post',
+			'posts_per_page'	=> 2,
+			'offset'			=> 11
+		));
+		if ( $last_section->have_posts() ) {
+		 	while ( $last_section->have_posts() ) {
+				$last_section->the_post();
+					?>
+						
+								<div class="mycol-lg-6">
+									<div class="mainPost big">
+										<div class="top">
+											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="data">
+												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div><?php echo get_the_date()?></div>
+											</div>
+										</div>
+			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<div class="content">
+											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
+											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
+											<div class="sectionAndSocial clearfix">
+												<div class="section">
+												<?php
+													$posttags = get_the_tags();
+													if ($posttags) {
+														foreach($posttags as $tag) {
+															echo $tag->name . ' '; 
+														}
+													}
+												?>
+												</div>
+												<div class="mainSocial pullLeft">
+													<a href="#"><i class="icon-telegram"></i></a>
+													<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>
+													<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo get_the_permalink() ?>&t=<?php echo get_the_title() ?>"><i class="icon-facebook"></i></a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="mycol-lg-6">
-						<div class="mainPost big">
-							<div class="top">
-								<div class="img"><img src="images/source.jpg" alt=""></div>
-								<div class="data">
-									<div class="source">الإمارات اليوم</div>
-									<div>منذ دقيقة</div>
-								</div>
-							</div>
-							<a href="#" class="avatar"><img src="images/1.jpg" class="bgCover" alt=""></a>
-							<div class="content">
-								<h3 class="title"><a href="#">الصندوق الذي يتحكم في ما تبقى من الإمبراطورية الصندوق الذي يتحكم في ما تبقى من الإمبراطورية</a></h3>
-								<div class="description"><div class="in">ولي العهد محمد بن زايد آل نهيان هو ابن مؤسس أبو ظبي ورئيس مجلس إدارة الصندوق. تصوير: بازوكي محمد / رويترز منذ إنشائها في عام 2002 ، لم يكن لدى أحدث صناديق الثروة السيادية الثلاثة التابعة لحكومة أبوظبي - مبادلة - مكتب خارج الأراضي</div></div>
-								<div class="sectionAndSocial clearfix">
-									<div class="section">العالم</div>
-									<div class="mainSocial pullLeft">
-										<a href="#"><i class="icon-telegram"></i></a>
-										<a href="#"><i class="icon-twitter"></i></a>
-										<a href="#"><i class="icon-facebook"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php
+			} 
+		 }
+		 
+	?>
 
-				</div>
-			</div>
-			
-			<hr>
-			
+		</div>
+	</div>
+	<hr>
+
+
 			<div class="textCentered mainPadding"><a href="#">المزيد ...</a></div>
 
 		</div>

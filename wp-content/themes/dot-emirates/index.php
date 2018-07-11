@@ -6,7 +6,7 @@
 			<div class="myrow clearfix">
 		<?php 
 		$first_section = new WP_Query(array(
-			'post_type' 		=> 'post',
+			'post_type' 			=> 'post',
 			'posts_per_page'		=> 3
 		));
 		
@@ -18,9 +18,9 @@
 								<div class="<?php echo ($first_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
 									<div class="mainPost <?php if($first_section->current_post == 0){ echo 'big';} ?>">
 										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -31,10 +31,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -72,10 +72,10 @@
 						
 								<div class="<?php echo ($second_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
 									<div class="mainPost small">
-										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+									<div class="top">
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -86,10 +86,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -125,13 +125,13 @@
 				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
-						<div class="top">
-							<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
-							<div class="data">
-								<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
-								<div><?php echo get_the_date()?></div>
-							</div>
+					<div class="top">
+						<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
+						<div class="data">
+							<div class="source"><?php echo get_field('source_name'); ?></div>
+							<div><?php echo get_the_date()?></div>
 						</div>
+					</div>
 						<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 						<div class="mainSocial pullLeft">
 							<a href="#"><i class="icon-telegram"></i></a>
@@ -159,10 +159,10 @@
 						
 								<div class="mycol-lg-3 mycol-sm-6">
 									<div class="mainPost small">
-										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+									<div class="top">
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -172,10 +172,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -216,10 +216,10 @@
 						
 								<div class="mycol-lg-6">
 									<div class="mainPost small">
-										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+									<div class="top">
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -230,10 +230,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -272,10 +272,10 @@
 						
 								<div class="mycol-lg-3 mycol-sm-6">
 									<div class="mainPost">
-										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+									<div class="top">
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -287,10 +287,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -327,13 +327,13 @@
 				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
-						<div class="top">
-							<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
-							<div class="data">
-								<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
-								<div><?php echo get_the_date()?></div>
-							</div>
+					<div class="top">
+						<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
+						<div class="data">
+							<div class="source"><?php echo get_field('source_name'); ?></div>
+							<div><?php echo get_the_date()?></div>
 						</div>
+					</div>
 						<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 						<div class="mainSocial pullLeft">
 							<a href="#"><i class="icon-telegram"></i></a>
@@ -354,7 +354,7 @@
 		$last_section = new WP_Query(array(
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 2,
-			'offset'			=> 11
+			'offset'			=> 17
 		));
 		if ( $last_section->have_posts() ) {
 		 	while ( $last_section->have_posts() ) {
@@ -363,10 +363,10 @@
 						
 								<div class="mycol-lg-6">
 									<div class="mainPost big">
-										<div class="top">
-											<div class="img"><img src="<?php echo cfix_featured_image_url(array('cat_id'=>get_the_category()[0]->cat_ID)); ?>" alt=""></div>
+									<div class="top">
+											<div class="img"><img src="<?php echo get_field('source_logo'); ?>" alt=""></div>
 											<div class="data">
-												<div class="source"><?php $category = get_the_category();echo $category[0]->cat_name; ?></div>
+												<div class="source"><?php echo get_field('source_name'); ?></div>
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
@@ -377,10 +377,10 @@
 											<div class="sectionAndSocial clearfix">
 												<div class="section">
 												<?php
-													$posttags = get_the_tags();
-													if ($posttags) {
-														foreach($posttags as $tag) {
-															echo $tag->name . ' '; 
+													$post_categories = get_the_category();
+													if ($post_categories) {
+														foreach($post_categories as $cat) {
+															echo $cat->name . ' '; 
 														}
 													}
 												?>
@@ -404,12 +404,11 @@
 		</div>
 	</div>
 	<hr>
-
-
-			<div class="textCentered mainPadding"><a href="#">المزيد ...</a></div>
+<!--
+			<div class="textCentered mainPadding"><a href="#"><?php print_r($last_section->max_num_pages*2-19) ?></a></div>
 
 		</div>
 	</div>
-
+		-->
 
 <?php get_footer(); ?>

@@ -61,9 +61,9 @@
 		<div class="myrow clearfix">
 	<?php 
 		$second_section = new WP_Query(array(
-			'post_type' 		=> 'post',
+			'post_type' 			=> 'post',
 			'posts_per_page'		=> 3,
-			'offset'			=>3
+			'offset'				=>3
 		));
 		if ( $second_section->have_posts() ) {
 		 	while ( $second_section->have_posts() ) {
@@ -404,11 +404,15 @@
 		</div>
 	</div>
 	<hr>
-<!--
-			<div class="textCentered mainPadding"><a href="#"><?php print_r($last_section->max_num_pages*2-19) ?></a></div>
-
+			 <?php 
+			 	$page_count = ceil(($last_section->max_num_pages*2-19)/2);
+				 if($page_count > 0)
+				 {?>
+				<div class="textCentered mainPadding" id="load-more" data-max-page="<?php echo $page_count ?>">المزيد...<a href="#"></a></div>
+				<?php } ?>
+	
 		</div>
 	</div>
-		-->
+
 
 <?php get_footer(); ?>

@@ -1,5 +1,7 @@
 <?php
 
+    include "navwalker.php";
+
     /*
     * Enqueue style & scripts
     * author: Andrew Emad
@@ -50,7 +52,7 @@
               'android'         => ''
             );
 
-           add_option('de_opts',$opts);
+           add_option('de_opts', $opts);
         }
     }
 
@@ -129,8 +131,8 @@
      * author: Andrew Emad
      */
     function de_admin_init(){
-        add_action('admin_enqueue_scripts','de_options_enqueue');
-        add_action('admin_post_de_save_options','de_save_options');
+        add_action('admin_enqueue_scripts', 'de_options_enqueue');
+        add_action('admin_post_de_save_options', 'de_save_options');
 
     }
 
@@ -369,9 +371,102 @@
 
 
     
+    function load_more_scripts() {
+ 
+        // register our main script but do not enqueue it yet
+        wp_register_script( 'load_more', get_template_directory_uri() . '/assets/js/loadmore.js', array('jquery') );
+     
+        // now the most interesting part
+        // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
+        // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+        wp_localize_script( 'load_more', 'load_more_params', array(
+            'ajaxurl'   => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
+            'offset'    => 19,
+            
+        ) );
+     
+         wp_enqueue_script( 'load_more' );
+    }
+     
+
+
+    function loadmore_ajax_handler(){
+ 
+        // prepare our arguments for the query
+        $args = array(
+            'offset'            => $_POST['offset'], // we need next page to be loaded
+            'post_status'       => 'publish',
+            'post_type' 		=> 'post',
+			'posts_per_page'	=> 2
+        );
+        // it is always better to use WP_Query but not here
+        query_posts( $args );
+        
+        if( have_posts() ) :
+            $out  = '<div class="oneSection">';
+            $out .= '<div class="myrow clearfix">';
+            while( have_posts() ): the_post();
+                $out .= '<div class="mycol-lg-6">';
+                $out .= '<div class="mainPost big">';
+                $out .= '<div class="top">';
+                $out .= '<div class="img"><img src="'. get_field('source_logo') .'" alt=""></div>';
+                $out .= '<div class="data">';
+                $out .= '<div class="source">'.get_field('source_name').'</div>';
+                $out .= '<div>'.get_the_date().'</div>';
+                $out .= '</div>';
+                $out .= '</div>';
+                $out .= '<a href="'.get_permalink().'" class="avatar"><img src="'. get_the_post_thumbnail_url().'" class="bgCover" alt=""></a>';
+                $out .= '<div class="content">';
+                $out .= '<h3 class="title"><a href="'.get_permalink().'">'. get_the_title().'</a></h3>';
+                $out .= '<div class="description"><div class="in">'.get_the_excerpt() .'</div></div>';
+                $out .= '<div class="sectionAndSocial clearfix">';
+                $out .= '<div class="section">';
+                $post_categories = get_the_category();
+                if ($post_categories) {
+                    foreach($post_categories as $cat) {
+                        $out .= $cat->name . ' '; 
+                    }
+                }
+                $out .= '</div>';
+                $out .= '<div class="mainSocial pullLeft">';
+                $out .= '<a href="#"><i class="icon-telegram"></i></a>';
+                $out .= '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"><i class="icon-twitter"></i></a>';
+                $out .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.get_the_permalink().'&t='.get_the_title() .'"><i class="icon-facebook"></i></a>';
+                $out .= '</div>';
+                $out .= '</div>';
+                $out .= '</div>';
+                $out .= '</div>';
+                $out .= '</div>';
+    
+            endwhile;
+     $out .= '</div>';
+        $out .= '</div>';
+        $out .= '<hr/>';
+
+        endif;
+    
+        
+        die($out); // here we exit the script and even no wp_reset_query() required!
+    }
+     
+     
+     
+    add_action('wp_ajax_loadmore', 'loadmore_ajax_handler'); // wp_ajax_{action}
+    add_action('wp_ajax_nopriv_loadmore', 'loadmore_ajax_handler'); // wp_ajax_nopriv_{action}
+
+
+
+
+
+
+
+
+
+
 
     // Actions & Filters
     add_action('wp_enqueue_scripts', 'de_enqueue');
+    add_action( 'wp_enqueue_scripts', 'load_more_scripts' );
     add_action('after_setup_theme', 'de_theme_setup');
     add_action('after_switch_theme', 'de_activate');
     add_action('admin_menu', 'de_options_menu');

@@ -35,6 +35,8 @@
         register_nav_menu( 'primary', __('Primary Menu'));
     }
 
+
+
     /*
      * Add Theme Options if not exists
      * author: Andrew Emad
@@ -364,9 +366,59 @@
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
         );
-         
-        // Registering your Custom Post Type
+          // Registering your Custom Post Type
         register_post_type( 'Articles', $args );
+
+
+
+        // Set UI labels for Custom Post Type
+        $labels = array(
+            'name'                => 'Contacts',
+            'singular_name'       =>'Contact',
+            'menu_name'           => 'Contacts',
+            'parent_item_colon'   => 'Parent Contact',
+            'all_items'           => 'All Contacts',
+            'view_item'           => 'View Contact',
+            'add_new_item'        => 'Add New Contact',
+            'add_new'             => 'Add New',
+            'edit_item'           => 'Edit Contact',
+            'update_item'         => 'Update Contact',
+            'search_items'        => 'Search Contact',
+            'not_found'           => 'Not Found',
+            'not_found_in_trash'  => 'Not found in Trash',
+        );
+         
+        // Set other options for Custom Post Type
+         
+        $args = array(
+            'label'               => 'Contacts',
+            'description'         => 'Contact news and reviews',
+            'labels'              => $labels,
+            // Features this CPT supports in Post Editor
+            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+            // You can associate this CPT with a taxonomy or custom taxonomy. 
+            'taxonomies'          => array( 'genres', 'category' ),
+            /* A hierarchical CPT is like Pages and can have
+            * Parent and child items. A non-hierarchical CPT
+            * is like Posts.
+            */ 
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'page',
+        );
+
+
+        // Registering your Custom Post Type
+        register_post_type( 'Contacts', $args );
     }
 
 
@@ -388,6 +440,8 @@
          wp_enqueue_script( 'load_more' );
     }
      
+
+
 
 
     function loadmore_ajax_handler(){
@@ -439,7 +493,7 @@
                 $out .= '</div>';
     
             endwhile;
-     $out .= '</div>';
+        $out .= '</div>';
         $out .= '</div>';
         $out .= '<hr/>';
 
@@ -450,35 +504,163 @@
     }
      
      
+
+
+
+
+    function search_scripts() {
+ 
+        // register our main script but do not enqueue it yet
+        wp_register_script( 'search', get_template_directory_uri() . '/assets/js/search.js', array('jquery') );
      
-    add_action('wp_ajax_loadmore', 'loadmore_ajax_handler'); // wp_ajax_{action}
-    add_action('wp_ajax_nopriv_loadmore', 'loadmore_ajax_handler'); // wp_ajax_nopriv_{action}
+        // now the most interesting part
+        // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
+        // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+        wp_localize_script( 'search', 'search_params', array(
+            'ajaxurl'   => site_url() . '/wp-admin/admin-ajax.php' // WordPress AJAX
+            
+        ) );
+     
+         wp_enqueue_script( 'search' );
+    }
+     
 
 
 
 
 
+    function search_handler(){
+ 
+        // prepare our arguments for the query
+        $args = array(
+            'post_status'       => 'publish',
+            'posts_per_page'	=> 5,
+            'de_title'        => $_POST['title'],
+            'post_type'         => 'post'
+
+        );
+        // it is always better to use WP_Query but not here
+        query_posts( $args );
+        
+        if( have_posts() ) :
+            $out  = '';
+            while( have_posts() ): the_post();
+            $out.= '<a href="'.get_the_permalink().'" class="oneResult">';
+            $out.= '<span class="avatar"><img src="'.get_the_post_thumbnail_url().'" alt=""></span>';
+            $out.= '<span class="title">'.get_the_title().'</span>';
+            $out.= '</a>';
+            endwhile;
+
+        endif;
+    
+        
+        die($out); // here we exit the script and even no wp_reset_query() required!
+    }
 
 
 
 
+    function contact_scripts() {
+ 
+        // register our main script but do not enqueue it yet
+        wp_register_script( 'contact', get_template_directory_uri() . '/assets/js/contactus.js', array('jquery') );
+     
+        // now the most interesting part
+        // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
+        // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+        wp_localize_script( 'contact', 'contact_params', array(
+            'ajaxurl'   => site_url() . '/wp-admin/admin-ajax.php' // WordPress AJAX
+            
+        ) );
+     
+         wp_enqueue_script( 'contact' );
+    }
+     
+
+
+
+
+
+    function contact_handler(){
+ 
+        // prepare our arguments for the query
+        $args = array(
+            'post_content'       => $_POST['message'],
+            'post_title'         => $_POST['name'],
+            'post_type'          => 'contacts'
+        );
+        // it is always better to use WP_Query but not here
+        $id = wp_insert_post( $args );
+        update_field('name', $_POST['name'], $id);
+        update_field('address', $_POST['address'], $id);
+        update_field('mobile', $_POST['phone'], $id);
+        update_field('email', $_POST['email'], $id);
+ 
+
+        die('Submitted Successfully'); // here we exit the script and even no wp_reset_query() required!
+    }
+
+
+
+
+    function de_posts_where( $where, &$wp_query )
+    {
+        global $wpdb;
+        if ( $de_title = $wp_query->get( 'de_title' ) ) {
+            $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'' . esc_sql( $wpdb->esc_like( $de_title ) ) . '%\'';
+        }
+        return $where;
+    }
+
+    function modify_search_pages( $query ) {
+        if ( $query->is_search() ) {
+            $query->query_vars['nopaging'] = 1;
+            $query->query_vars['posts_per_page'] = -1;
+            $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false), 'objects');
+            $searchable_types = array();
+            // Add available post types
+            if( $post_types ) {
+                foreach( $post_types as $type) {
+                    $searchable_types[] = $type->name;
+                }
+            }
+            $query->set( 'post_type', $searchable_types );
+        }
+    }
+    
 
 
     // Actions & Filters
     add_action('wp_enqueue_scripts', 'de_enqueue');
     add_action( 'wp_enqueue_scripts', 'load_more_scripts' );
+    add_action( 'wp_enqueue_scripts', 'search_scripts' );
+    add_action( 'wp_enqueue_scripts', 'contact_scripts' );
     add_action('after_setup_theme', 'de_theme_setup');
     add_action('after_switch_theme', 'de_activate');
     add_action('admin_menu', 'de_options_menu');
     add_action('admin_init', 'de_admin_init');
     add_action( 'init', 'create_post_types' );
+    add_action( 'pre_get_posts', 'modify_search_pages' );
+    add_action('wp_ajax_loadmore', 'loadmore_ajax_handler'); // wp_ajax_{action}
+    add_action('wp_ajax_nopriv_loadmore', 'loadmore_ajax_handler');
+
+    add_action('wp_ajax_search', 'search_handler'); // wp_ajax_{action}
+    add_action('wp_ajax_nopriv_search', 'search_handler'); // wp_ajax_nopriv_{action}
+
+    add_action('wp_ajax_contact', 'contact_handler'); // wp_ajax_{action}
+    add_action('wp_ajax_nopriv_contact', 'contact_handler'); // wp_ajax_nopriv_{action}
+
     add_filter( 'get_the_date', 'wp_relative_date' ); // for posts
     add_filter( 'get_comment_date', 'wp_relative_date' ); // for comments
     add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+    add_filter( 'posts_where', 'de_posts_where', 10, 2 );
+
+
+
 
     // Supports
     add_theme_support( 'menus' );
     add_theme_support( 'post-thumbnails' );
 
-
+    
 ?>

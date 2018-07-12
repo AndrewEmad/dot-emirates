@@ -18,38 +18,11 @@
 	
 	<div class="top">
 		<div class="gridContainer relative clearfix">
-			<h1 class="logo pullRight"><img src="images/logo.png" alt=""></h1>
+			<h1 class="logo pullRight"><img src="<?php echo $opts['logo'] ?>" alt=""></h1>
 			<div class="leftArea pullLeft">
 			
 				<div class="one search">
-					<div class="icon"><i class="icon-search"></i></div>
-					<div class="theForm">
-						<form action="#">
-							<span class="iconIn"><i class="icon-search"></i></span>
-							<input type="text" placeholder="بحث" class="formItem">
-							<input type="submit" value="">
-						</form>
-						<div class="textCentered trend">
-							<div class="in">
-								<span>الأكثر إنتشارًا:</span>
-								<span>أبوظبي</span>
-								<span>دبي</span>
-								<span>محمد بن زايد</span>
-							</div>
-						</div>
-						<div class="theResults">
-							<a href="#" class="oneResult">
-								<span class="avatar"><img src="images/3.jpg" alt=""></span>
-								<span class="title">ولي العهد محمد ن زايد آل نهيان هو ابن مؤسس ابو ظبي ورئيس مجلس اداره الصندوق</span>
-							</a>
-							<a href="#" class="oneResult">
-								<span class="title">ولي العهد محمد ن زايد آل نهيان هو ابن مؤسس ابو ظبي ورئيس مجلس اداره الصندوق</span>
-							</a>
-							<a href="#" class="oneResult">
-								<span class="avatar"><img src="images/3.jpg" alt=""></span>
-								<span class="title">ولي العهد محمد ن زايد آل نهيان هو ابن مؤسس ابو ظبي ورئيس مجلس اداره الصندوق</span>
-							</a>
-						</div>
+					<?php get_search_form() ?>
 					</div>
 					
 				</div>

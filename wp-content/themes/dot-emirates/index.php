@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+
+
 	<div class="mainContent">
 		<div class="gridContainer">
 		<div class="oneSection">

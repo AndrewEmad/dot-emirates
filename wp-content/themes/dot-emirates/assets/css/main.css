@@ -1,4 +1,7 @@
 /* mixins */
+.hidden{
+  display:none;
+}
 img, object, embed, video {
   max-width: 100%; }
 

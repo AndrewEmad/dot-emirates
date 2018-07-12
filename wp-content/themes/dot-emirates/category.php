@@ -1,26 +1,30 @@
-<?php get_header(); ?>
+<?php get_header();
+$category = get_category( get_query_var( 'cat' ) );
+?>
 	
 	<div class="mainContent">
 		<div class="gridContainer">
 
 		<div class="sectionTitle textCentered">
-			<div class="icon"><i class="icon-articles"></i></div>
-			<h1 class="title"><?php echo get_the_category()[0]->name ?></h1>
+			<div class="icon"><i class="<?php echo $category->description ?>"></i></div>
+			<h1 class="title"><?php single_cat_title()?></h1>
 			<div class="tags">
 				<span>أخبار مميزة عن:</span>
-				<a href="#">أبوظبي</a>
-				<a href="#">دبي</a>
-				<a href="#">محمد بن زايد</a>
+				<a>أبوظبي</a>
+				<a>دبي</a>
+				<a>محمد بن زايد</a>
 			</div>
 		</div>
 
-
-        <?php 
+		
+		<?php 
+		
 		$wide_section = new WP_Query(array(
 			'post_type' 		=> 'post',
             'posts_per_page'	=> 1,
-            'cat_id'            => get_the_category()[0]->cat_ID,
+            'cat'            => $category->cat_ID
 		));
+	
 		if ( $wide_section->have_posts() ) {
 				$wide_section->the_post();?>
 			<div class="widePost">
@@ -54,7 +58,8 @@
 			'post_type' 		=> 'post',
 			'posts_per_page'		=> 3,
             'cat_id'                => get_the_category()[0]->cat_ID,
-            'offset'                => 1
+            'offset'                => 1,
+            'cat'            => $category->cat_ID
 
 		));
 		
@@ -111,7 +116,7 @@
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 3,
 			'offset'			=> 4,
-            'cat_id'            => get_the_category()[0]->cat_ID
+            'cat'            => $category->cat_ID
 		));
 		if ( $second_section->have_posts() ) {
 		 	while ( $second_section->have_posts() ) {
@@ -170,7 +175,7 @@
 			'post_type' 		=> 'post',
 			'posts_per_page'		=> 3,
 			'offset'				=> 7,
-            'cat_id'            => get_the_category()[0]->cat_ID
+            'cat'            => $category->cat_ID
 		));
 		
 		if ( $first_section->have_posts() ) {
@@ -226,7 +231,7 @@
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 3,
 			'offset'			=> 10,
-            'cat_id'            => get_the_category()[0]->cat_ID
+            'cat'            => $category->cat_ID
 		));
 		if ( $second_section->have_posts() ) {
 		 	while ( $second_section->have_posts() ) {

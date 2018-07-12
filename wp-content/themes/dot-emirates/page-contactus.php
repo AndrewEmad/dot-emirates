@@ -31,30 +31,27 @@ $page = get_page_by_title( 'contactus' );
    <div class="mrgBtm clearfix">
         <div class="myrow clearfix">
             <div class="mycol-lg-6">
-                <form action="#" class="mrgBtm-lg">
+                <form action="#" class="mrgBtm-lg" id="contact-form">
                     <div class="myrow clearfix">
                         <div class="mycol-lg-12">
                             <select class="formItem mrgBtm">
-                                <option value="0">اتصل بنا</option>
-                                <option value="1">اتصل بنا</option>
-                                <option value="2">اتصل بنا</option>
-                                <option value="3">اتصل بنا</option>
+
                             </select>
                         </div>
                         <div class="mycol-sm-6">
-                            <input type="text" class="formItem mrgBtm" placeholder="الإسم">
+                            <input type="text" id = "name" class="formItem mrgBtm" placeholder="الإسم">
                         </div>
                         <div class="mycol-sm-6">
-                            <input type="text" class="formItem mrgBtm" placeholder="البريد الإلكتروني">
+                            <input type="email" id = "email" class="formItem mrgBtm" placeholder="البريد الإلكتروني">
                         </div>
                         <div class="mycol-sm-6">
-                            <input type="text" class="formItem mrgBtm" placeholder="الهاتف الجوال">
+                            <input type="text" id = "phone" class="formItem mrgBtm" placeholder="الهاتف الجوال">
                         </div>
                         <div class="mycol-sm-6">
-                            <input type="text" class="formItem mrgBtm" placeholder="المكان">
+                            <input type="text" id = "address" class="formItem mrgBtm" placeholder="المكان">
                         </div>
                         <div class="mycol-lg-12">
-                            <textarea class="formItem textarea mrgBtm" placeholder="الرسالة"></textarea>
+                            <textarea id = "message" class="formItem textarea mrgBtm" placeholder="الرسالة"></textarea>
                             <input type="submit" class="formItem submit" value="إرسال">
                         </div>
                     </div>
@@ -76,4 +73,32 @@ $page = get_page_by_title( 'contactus' );
             </div>
         </div>
     </div>
+    <script>
+        
+    jQuery(function($){
+	    $('#contact-form').on('submit',function(e){
+        e.preventDefault();
+        var data = {
+            'name':$("#name").val(),
+            'address':$("#address").val(),
+            'phone':$("#phone").val(),
+            'message':$("#message").val(),
+            'email':$("#email").val(),
+			'action': 'contact',
+            'title' : $(this).val(),
+        };
+
+		$.ajax({
+			url : contact_params.ajaxurl, // AJAX handler
+			data : data,
+			type : 'POST',
+			
+			success : function( data ){
+                location.reload();
+
+            }
+		});
+	});
+});
+        </script>
 <?php include('about-footer.php') ?>

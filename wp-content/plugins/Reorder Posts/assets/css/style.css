@@ -1,0 +1,43 @@
+.portlet-header {
+    padding: 0.2em 0.3em;
+    margin-bottom: 0.5em;
+    position: relative;
+    overflow: hidden;
+    height:30px;
+    cursor:move
+  }
+  
+  .portlet-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -8px;
+  }
+  
+  .portlet-content {
+    padding: 0.4em;
+    height:150px;
+    overflow: hidden;
+  }
+  
+  .portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 100px;
+    margin:20px 100px
+
+  }
+
+  .portlet{
+      margin:50px 20px;
+      overflow:hidden
+  }
+
+.content,.img{
+   padding:0;
+   border:1px solid #eee;
+   height:141px
+}
+.header{
+    margin:50px 20px
+}

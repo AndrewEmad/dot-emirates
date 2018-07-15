@@ -73,32 +73,5 @@ $page = get_page_by_title( 'contactus' );
             </div>
         </div>
     </div>
-    <script>
-        
-    jQuery(function($){
-	    $('#contact-form').on('submit',function(e){
-        e.preventDefault();
-        var data = {
-            'name':$("#name").val(),
-            'address':$("#address").val(),
-            'phone':$("#phone").val(),
-            'message':$("#message").val(),
-            'email':$("#email").val(),
-			'action': 'contact',
-            'title' : $(this).val(),
-        };
-
-		$.ajax({
-			url : contact_params.ajaxurl, // AJAX handler
-			data : data,
-			type : 'POST',
-			
-			success : function( data ){
-                location.reload();
-
-            }
-		});
-	});
-});
-        </script>
+    
 <?php include('about-footer.php') ?>

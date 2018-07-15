@@ -877,7 +877,8 @@
 		<ul class="theMenu">
 		<?php wp_nav_menu(array(
 					        'theme-location'             => 'primary',
-                            'container'                  => false
+							'container'                  => false,
+							'walker'					=> new WPDocs_Walker_Nav_Menu()
 
                     )) ?>
 

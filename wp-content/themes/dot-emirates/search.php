@@ -4,8 +4,14 @@
 		<div class="gridContainer">
 			
 			<div class="sectionTitle textCentered">
-				<div class="icon"><i class="icon-search2"></i></div>
-				<h1 class="title2">نتائج البحث عن “<?php echo $_GET["s"] ?>"</h1>
+                <div class="icon"><i class="icon-search2"></i></div>
+                <?php if ($wp_query->found_posts == 0){?>
+                    <h1 class="title2"> ﻻ توجد اخبار او مقاﻻت عن “<?php echo $_GET["s"] ?>"</h1>
+                <?php 
+                }
+                else {?>
+                <h1 class="title2">نتائج البحث عن “<?php echo $_GET["s"] ?>"</h1>
+                <?php } ?>
 			</div>
             <?php $count=0; while( $wp_query->current_post<$wp_query->found_posts-2 ) {?>
                 
@@ -27,7 +33,7 @@
                                         <span><?php echo get_field('source_name'); ?></span>
                                     <?php } ?>
                                 </div>
-                                <a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url() ?>" class="bgCover" alt=""></a>
+                                <a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, ($cnt == 0)? 'de_section_big' : 'de_section_small') ?>" class="bgCover" alt=""></a>
                                 <div class="content">
                                     <h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title( ) ?></a></h3>
                                     <div class="description"><div class="in"><?php echo get_the_content() ?></div></div>
@@ -76,7 +82,7 @@
                                         <span><?php echo get_field('source_name'); ?></span>
                                     <?php } ?>
                                 </div>
-                                <?php if($cnt == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a><?php } ?>
+                                <?php if($cnt == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_normal'); ?>" class="bgCover" alt=""></a><?php } ?>
                                 <div class="content">
                                     <h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title( ) ?></a></h3>
                                     <div class="description"><div class="in"><?php echo get_the_content() ?></div></div>

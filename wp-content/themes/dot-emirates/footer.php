@@ -30,8 +30,8 @@ $opts = get_option("de_opts");
             <div class="verticalLine"></div>
             <div class="subscribeForm">
                 <div class="title">القائمة البريدية</div>
-                <form action="#">
-                    <input type="emial" class="emailInp" placeholder="البريد الإلكتروني">
+                <form action="#" id="email-list-form">
+                    <input type="email" class="emailInp" id="emailInp" placeholder="البريد الإلكتروني">
                     <input type="submit" value="إشتراك">
                 </form>
             </div>
@@ -55,23 +55,12 @@ $opts = get_option("de_opts");
 
 <?php wp_footer(); ?>
 
-<div class="loading">
-		<div class="tableDis">
-			<div class="oneCell">
-				<div class="theImg">
-					<img src="<?php echo get_template_directory_uri() ?>/assets/image/loadingLogo.png" alt="">
-					<svg height="176" width="176">
-						<circle cx="88" cy="88" r="87" stroke="#C1CA35" stroke-width="2" stroke-dasharray="546" fill="none"></circle><!-- stroke-dasharray="672" -->
-					</svg>
-				</div>
-			</div>
-		</div>
-	</div>
+
 
 
 <script> 
 $(document).ready(function(){
-	$('.loading').fadeOut(1000)
+	setTimeout(function(){$('.loading').fadeOut(500);},1000);
 })
 
 </script>

@@ -33,6 +33,14 @@
     */
     function de_theme_setup(){
         register_nav_menu( 'primary', __('Primary Menu'));
+        add_image_size( 'de_section_big', '628', '333' );
+        add_image_size( 'de_section_small', '304', '246' );
+        add_image_size( 'de_section_normal', '433', '230' );
+        add_image_size( 'de_section_wide', '1275', '678' );
+        add_image_size( 'de_details_wide', '1257', '668' );
+        add_image_size( 'de_avatar', '36', '36' );
+        add_image_size( 'de_page_icon', '181', '181' );
+
     }
 
 
@@ -270,7 +278,6 @@
     * Create Custom Post Types
     * author: Andrew Emad
     */
- 
     function create_post_types() {
  
         // Set UI labels for Custom Post Type
@@ -296,14 +303,9 @@
             'label'               => 'Videos',
             'description'         => 'Video news and reviews',
             'labels'              => $labels,
-            // Features this CPT supports in Post Editor
             'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-            // You can associate this CPT with a taxonomy or custom taxonomy. 
             'taxonomies'          => array( 'genres', 'category' ),
-            /* A hierarchical CPT is like Pages and can have
-            * Parent and child items. A non-hierarchical CPT
-            * is like Posts.
-            */ 
+
             'hierarchical'        => false,
             'public'              => true,
             'show_ui'             => true,
@@ -316,13 +318,15 @@
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
+            'menu_icon'           => 'dashicons-editor-video',
+
         );
          
-        // Registering your Custom Post Type
+        // Registering Custom Post Type
         register_post_type( 'Videos', $args );
 
 
-        // Blog Post Type
+        // Post Type
         $labels = array(
             'name'                => 'Articles',
             'singular_name'       =>'Article',
@@ -345,14 +349,9 @@
             'label'               => 'Articles',
             'description'         => 'Article news and reviews',
             'labels'              => $labels,
-            // Features this CPT supports in Post Editor
             'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-            // You can associate this CPT with a taxonomy or custom taxonomy. 
             'taxonomies'          => array( 'genres', 'category' ),
-            /* A hierarchical CPT is like Pages and can have
-            * Parent and child items. A non-hierarchical CPT
-            * is like Posts.
-            */ 
+
             'hierarchical'        => false,
             'public'              => true,
             'show_ui'             => true,
@@ -365,8 +364,10 @@
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
+            'menu_icon'           => 'dashicons-format-aside',
+
         );
-          // Registering your Custom Post Type
+          // Registering Custom Post Type
         register_post_type( 'Articles', $args );
 
 
@@ -394,14 +395,9 @@
             'label'               => 'Contacts',
             'description'         => 'Contact news and reviews',
             'labels'              => $labels,
-            // Features this CPT supports in Post Editor
             'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-            // You can associate this CPT with a taxonomy or custom taxonomy. 
             'taxonomies'          => array( 'genres', 'category' ),
-            /* A hierarchical CPT is like Pages and can have
-            * Parent and child items. A non-hierarchical CPT
-            * is like Posts.
-            */ 
+
             'hierarchical'        => false,
             'public'              => true,
             'show_ui'             => true,
@@ -414,15 +410,65 @@
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
+            'menu_icon'           => 'dashicons-phone',
+
         );
 
 
-        // Registering your Custom Post Type
+        // Registering Custom Post Type
         register_post_type( 'Contacts', $args );
+
+
+
+    // Post Type
+        $labels = array(
+            'name'                => 'Emails',
+            'singular_name'       =>'Email',
+            'menu_name'           => 'Emails',
+            'parent_item_colon'   => 'Parent Email',
+            'all_items'           => 'All Emails',
+            'view_item'           => 'View Email',
+            'add_new_item'        => 'Add New Email',
+            'add_new'             => 'Add New',
+            'edit_item'           => 'Edit Email',
+            'update_item'         => 'Update Email',
+            'search_items'        => 'Search Email',
+            'not_found'           => 'Not Found',
+            'not_found_in_trash'  => 'Not found in Trash',
+        );
+         
+        // Set other options for Custom Post Type
+         
+        $args = array(
+            'label'               => 'Emails',
+            'description'         => 'Email news and reviews',
+            'labels'              => $labels,
+            'supports'            => array( 'title'),
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'page',
+            'menu_icon'           => 'dashicons-email-alt'
+        );
+          // Registering Custom Post Type
+        register_post_type( 'Email', $args );
+
+
     }
 
 
-    
+    /*
+    * Enqueue scripts for loadmore
+    * author: Andrew Emad
+    */
     function load_more_scripts() {
  
         // register our main script but do not enqueue it yet
@@ -443,7 +489,10 @@
 
 
 
-
+    /*
+    * Handler for load more
+    * author: Andrew Emad
+    */
     function loadmore_ajax_handler(){
  
         // prepare our arguments for the query
@@ -507,7 +556,10 @@
 
 
 
-
+    /*
+    * Enqueue scripts for search
+    * author: Andrew Emad
+    */
     function search_scripts() {
  
         // register our main script but do not enqueue it yet
@@ -528,14 +580,17 @@
 
 
 
-
+    /*
+    * Ajax Handler for search
+    * author: Andrew Emad
+    */
     function search_handler(){
  
         // prepare our arguments for the query
         $args = array(
             'post_status'       => 'publish',
             'posts_per_page'	=> 5,
-            'de_title'        => $_POST['title'],
+            'de_title'          => $_POST['title'],
             'post_type'         => 'post'
 
         );
@@ -559,7 +614,10 @@
 
 
 
-
+    /*
+    * Enqueue scripts for contact us
+    * author: Andrew Emad
+    */
     function contact_scripts() {
  
         // register our main script but do not enqueue it yet
@@ -578,11 +636,29 @@
      
 
 
-
-
-
+    /*
+    * Handler for contact us
+    * author: Andrew Emad
+    */
     function contact_handler(){
  
+        $response = array(
+            'status'    => 'succeed',
+            'message'   => ' تم الارسال'
+        );
+
+        if(!preg_match("/^[0-9]{11}$/", $_POST['phone'])) {
+            $respone['status'] = 'failed';
+            $response['message'] = "رقم التليفون غير صحيح"; 
+            echo json_encode($response);
+            return;
+        }
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $respone['status'] = 'failed';
+            $response['message'] = "البريد الالكترونى غير صحيح"; 
+            die(json_encode($response));
+        }
+
         // prepare our arguments for the query
         $args = array(
             'post_content'       => $_POST['message'],
@@ -597,12 +673,66 @@
         update_field('email', $_POST['email'], $id);
  
 
-        die('Submitted Successfully'); // here we exit the script and even no wp_reset_query() required!
+        die(json_encode($response)); // here we exit the script and even no wp_reset_query() required!
     }
 
 
 
+    /*
+    * Enqueue scripts for email_list
+    * author: Andrew Emad
+    */
+    function email_list_scripts() {
+ 
+        // register our main script but do not enqueue it yet
+        wp_register_script( 'email_list', get_template_directory_uri() . '/assets/js/email-list.js', array('jquery') );
+     
+        // now the most interesting part
+        // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
+        // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+        wp_localize_script( 'email_list', 'email_list_params', array(
+            'ajaxurl'   => site_url() . '/wp-admin/admin-ajax.php' // WordPress AJAX
+            
+        ) );
+     
+         wp_enqueue_script( 'email_list' );
+    }
+     
 
+
+    /*
+    * Handler for contact us
+    * author: Andrew Emad
+    */
+    function email_list_handler(){
+ 
+        // prepare our arguments for the query
+        $response = array(
+            'status'    => 'succeed',
+            'message'   => 'شكرا لمتابعتك دوت امارات'
+        );
+
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $respone['status'] = 'failed';
+            $response['message'] = "البريد الالكترونى غير صحيح"; 
+            die(json_encode($response));
+        }
+        $args = array(
+            'post_title'         => $_POST['email'],
+            'post_type'          => 'email'
+        );
+        // it is always better to use WP_Query but not here
+        $id = wp_insert_post( $args );
+        
+        die(json_encode($response));
+    }
+
+
+
+    /*
+    * Search for post with 'LIKE'
+    * author: Andrew Emad
+    */
     function de_posts_where( $where, &$wp_query )
     {
         global $wpdb;
@@ -612,6 +742,10 @@
         return $where;
     }
 
+    /*
+    * Change search pagination and post types
+    * author: Andrew Emad
+    */
     function modify_search_pages( $query ) {
         if ( $query->is_search() ) {
             $query->query_vars['nopaging'] = 1;
@@ -628,13 +762,14 @@
         }
     }
     
-
+    
 
     // Actions & Filters
     add_action('wp_enqueue_scripts', 'de_enqueue');
     add_action( 'wp_enqueue_scripts', 'load_more_scripts' );
     add_action( 'wp_enqueue_scripts', 'search_scripts' );
     add_action( 'wp_enqueue_scripts', 'contact_scripts' );
+    add_action( 'wp_enqueue_scripts', 'email_list_scripts' );
     add_action('after_setup_theme', 'de_theme_setup');
     add_action('after_switch_theme', 'de_activate');
     add_action('admin_menu', 'de_options_menu');
@@ -649,6 +784,9 @@
 
     add_action('wp_ajax_contact', 'contact_handler'); // wp_ajax_{action}
     add_action('wp_ajax_nopriv_contact', 'contact_handler'); // wp_ajax_nopriv_{action}
+
+    add_action('wp_ajax_email_list', 'email_list_handler'); // wp_ajax_{action}
+    add_action('wp_ajax_nopriv_email_list', 'email_list_handler'); // wp_ajax_nopriv_{action}
 
     add_filter( 'get_the_date', 'wp_relative_date' ); // for posts
     add_filter( 'get_comment_date', 'wp_relative_date' ); // for comments

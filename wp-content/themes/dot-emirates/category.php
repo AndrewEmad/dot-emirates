@@ -28,7 +28,7 @@ $category = get_category( get_query_var( 'cat' ) );
 		if ( $wide_section->have_posts() ) {
 				$wide_section->the_post();?>
 			<div class="widePost">
-				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_wide'); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
 					<div class="top">
@@ -47,12 +47,11 @@ $category = get_category( get_query_var( 'cat' ) );
 					</div>
 				</div>
 			</div>
-			<?php } ?>
 			<hr>
+			<?php } ?>
 
 
-		<div class="oneSection">
-			<div class="myrow clearfix">
+		
 		<?php 
 		$first_section = new WP_Query(array(
 			'post_type' 		=> 'post',
@@ -63,8 +62,10 @@ $category = get_category( get_query_var( 'cat' ) );
 
 		));
 		
-		if ( $first_section->have_posts() ) {
-		 	while ( $first_section->have_posts() ) {
+		if ( $first_section->have_posts() ) {?>
+			<div class="oneSection">
+			<div class="myrow clearfix">
+		 	<?php while ( $first_section->have_posts() ) {
 				$first_section->the_post();
 					?>
 								<div class="<?php echo ($first_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
@@ -76,7 +77,7 @@ $category = get_category( get_query_var( 'cat' ) );
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, ($first_section->current_post == 0)? 'de_section_big' : 'de_section_small'); ?>" class="bgCover" alt=""></a>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -101,16 +102,13 @@ $category = get_category( get_query_var( 'cat' ) );
 									</div>
 								</div>
 								
-					<?php
-			} 
-		 }
-		 
-	?>
+					<?php }?> 
 		</div>
 	</div>
 	<hr>
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	<?php }?>
+
+	
 	<?php 
 		$second_section = new WP_Query(array(
 			'post_type' 		=> 'post',
@@ -118,8 +116,10 @@ $category = get_category( get_query_var( 'cat' ) );
 			'offset'			=> 4,
             'cat'            => $category->cat_ID
 		));
-		if ( $second_section->have_posts() ) {
-		 	while ( $second_section->have_posts() ) {
+		if ( $second_section->have_posts() ) {?>
+			<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $second_section->have_posts() ) {
 				$second_section->the_post();
 					?>
 						
@@ -132,7 +132,7 @@ $category = get_category( get_query_var( 'cat' ) );
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a><?php } ?>
+			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_normal'); ?>" class="bgCover" alt=""></a><?php } ?>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -157,19 +157,13 @@ $category = get_category( get_query_var( 'cat' ) );
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
+	<hr>
+	<?php }?>
 
-<hr />
 
-<div class="oneSection">
-			<div class="myrow clearfix">
 		<?php 
 		$first_section = new WP_Query(array(
 			'post_type' 		=> 'post',
@@ -178,8 +172,10 @@ $category = get_category( get_query_var( 'cat' ) );
             'cat'            => $category->cat_ID
 		));
 		
-		if ( $first_section->have_posts() ) {
-		 	while ( $first_section->have_posts() ) {
+		if ( $first_section->have_posts() ) {?>
+			<div class="oneSection">
+			<div class="myrow clearfix">
+		 	<?php while ( $first_section->have_posts() ) {
 				$first_section->the_post();
 					?>
 								<div class="<?php echo ($first_section->current_post == 0)? 'mycol-lg-6':'mycol-lg-3 mycol-sm-6' ?>">
@@ -191,7 +187,7 @@ $category = get_category( get_query_var( 'cat' ) );
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, ($first_section->current_post == 0)? 'de_section_big' : 'de_section_small'); ?>" class="bgCover" alt=""></a>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -216,16 +212,13 @@ $category = get_category( get_query_var( 'cat' ) );
 									</div>
 								</div>
 								
-					<?php
-			} 
-		 }
-		 
-	?>
+								<?php }?> 
 		</div>
 	</div>
 	<hr>
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	<?php }?>
+
+	
 	<?php 
 		$second_section = new WP_Query(array(
 			'post_type' 		=> 'post',
@@ -233,8 +226,10 @@ $category = get_category( get_query_var( 'cat' ) );
 			'offset'			=> 10,
             'cat'            => $category->cat_ID
 		));
-		if ( $second_section->have_posts() ) {
-		 	while ( $second_section->have_posts() ) {
+		if ( $second_section->have_posts() ) {?>
+			<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $second_section->have_posts() ) {
 				$second_section->the_post();
 					?>
 						
@@ -247,7 +242,7 @@ $category = get_category( get_query_var( 'cat' ) );
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a><?php } ?>
+			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_normal'); ?>" class="bgCover" alt=""></a><?php } ?>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -272,14 +267,11 @@ $category = get_category( get_query_var( 'cat' ) );
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
+	<hr>
+	<?php }?>
 
 
 		</div>

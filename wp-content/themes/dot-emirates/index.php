@@ -4,8 +4,7 @@
 
 	<div class="mainContent">
 		<div class="gridContainer">
-		<div class="oneSection">
-			<div class="myrow clearfix">
+		
 		<?php 
 		$first_section = new WP_Query(array(
 			'post_type' 			=> 'post',
@@ -13,7 +12,10 @@
 		));
 		
 		if ( $first_section->have_posts() ) {
-		 	while ( $first_section->have_posts() ) {
+			?>
+			<div class="oneSection">
+			<div class="myrow clearfix">
+		 	<?php while ( $first_section->have_posts() ) {
 				$first_section->the_post();
 					?>
 						
@@ -26,7 +28,7 @@
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, ($first_section->current_post == 0)? 'de_section_big' : 'de_section_small'); ?>" class="bgCover" alt=""></a>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -51,24 +53,22 @@
 									</div>
 								</div>
 								
-					<?php
-			} 
-		 }
-		 
-	?>
+								<?php }?> 
 		</div>
 	</div>
 	<hr>
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	<?php }?>
+	
 	<?php 
 		$second_section = new WP_Query(array(
 			'post_type' 			=> 'post',
 			'posts_per_page'		=> 3,
 			'offset'				=>3
 		));
-		if ( $second_section->have_posts() ) {
-		 	while ( $second_section->have_posts() ) {
+		if ( $second_section->have_posts() ) {?>
+		<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $second_section->have_posts() ) {
 				$second_section->the_post();
 					?>
 						
@@ -81,7 +81,7 @@
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-			 <?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a><?php } ?>
+			 							<?php if($second_section->current_post == 0){ ?><a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_normal'); ?>" class="bgCover" alt=""></a><?php } ?>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -106,15 +106,11 @@
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
 	<hr>
+	<?php }?>
 	<?php 
 		$wide_section = new WP_Query(array(
 			'post_type' 		=> 'post',
@@ -124,7 +120,7 @@
 		if ( $wide_section->have_posts() ) {
 				$wide_section->the_post();?>
 			<div class="widePost">
-				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_wide'); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
 					<div class="top">
@@ -146,16 +142,17 @@
 			<?php } ?>
 			<hr>
 
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	
 	<?php 
 		$third_section = new WP_Query(array(
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 4,
 			'offset'			=> 7
 		));
-		if ( $third_section->have_posts() ) {
-		 	while ( $third_section->have_posts() ) {
+		if ( $third_section->have_posts() ) {?>
+		<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $third_section->have_posts() ) {
 				$third_section->the_post();
 					?>
 						
@@ -192,27 +189,22 @@
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
-
-	<hr />
-
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	<hr>
+	<?php }?>
+	
 	<?php 
 		$fourth_section = new WP_Query(array(
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 2,
 			'offset'			=> 11
 		));
-		if ( $fourth_section->have_posts() ) {
-		 	while ( $fourth_section->have_posts() ) {
+		if ( $fourth_section->have_posts() ) {?>
+		<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $fourth_section->have_posts() ) {
 				$fourth_section->the_post();
 					?>
 						
@@ -225,7 +217,7 @@
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_normal'); ?>" class="bgCover" alt=""></a>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -250,25 +242,21 @@
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
 	<hr>
-<div class="oneSection">
-							<div class="myrow clearfix">
+	<?php }?>
+
 	<?php 
 		$fifth_section = new WP_Query(array(
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 4,
 			'offset'			=> 13
 		));
-		if ( $fifth_section->have_posts() ) {
-		 	while ( $fifth_section->have_posts() ) {
+		if ( $fifth_section->have_posts() ) {?><div class="oneSection">
+	<div class="myrow clearfix">
+		 	<?php while ( $fifth_section->have_posts() ) {
 				$fifth_section->the_post();
 					?>
 						
@@ -281,7 +269,7 @@
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+										<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_small'); ?>" class="bgCover" alt=""></a>
 
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
@@ -307,16 +295,11 @@
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
-	
 	<hr>
+	<?php }?>
 
 	<?php 
 		$video_section = new WP_Query(array(
@@ -326,7 +309,7 @@
 		if ( $video_section->have_posts() ) {
 				$video_section->the_post();?>
 			<div class="widePost">
-				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+				<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null, 'de_section_wide'); ?>" class="bgCover" alt=""></a>
 				<div class="content">
 					<div class="in clearfix">
 					<div class="top">
@@ -350,16 +333,17 @@
 			<?php } ?>
 			<hr>
 
-	<div class="oneSection">
-		<div class="myrow clearfix">
+	
 	<?php 
 		$last_section = new WP_Query(array(
 			'post_type' 		=> 'post',
 			'posts_per_page'	=> 2,
 			'offset'			=> 17
 		));
-		if ( $last_section->have_posts() ) {
-		 	while ( $last_section->have_posts() ) {
+		if ( $last_section->have_posts() ) {?>
+		<div class="oneSection">
+		<div class="myrow clearfix">
+		 	<?php while ( $last_section->have_posts() ) {
 				$last_section->the_post();
 					?>
 						
@@ -372,7 +356,7 @@
 												<div><?php echo get_the_date()?></div>
 											</div>
 										</div>
-			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(); ?>" class="bgCover" alt=""></a>
+			 							<a href="<?php echo get_permalink() ?>" class="avatar"><img src="<?php echo get_the_post_thumbnail_url(null,'de_section_big'); ?>" class="bgCover" alt=""></a>
 										<div class="content">
 											<h3 class="title"><a href="<?php echo get_permalink() ?>"><?php echo get_the_title() ?></a></h3>
 											<div class="description"><div class="in"><?php echo get_the_excerpt() ?></div></div>
@@ -397,15 +381,11 @@
 									</div>
 								</div>
 
-					<?php
-			} 
-		 }
-		 
-	?>
-
+					<?php }?> 
 		</div>
 	</div>
 	<hr>
+	<?php }?>
 			 <?php 
 			 	$page_count = ceil(($last_section->max_num_pages*2-19)/2);
 				 if($page_count > 0)

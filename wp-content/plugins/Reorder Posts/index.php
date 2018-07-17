@@ -93,7 +93,7 @@ function rp_menu_page()
         <div class="header row">
             <div class="col-6">
                 <h1> Reorder Posts</h1>
-                <h6>Drag & Drop to reorder posts</h3>
+                <h6>Drag & Drop to reorder posts</h6>
             </div>
             <div class="col-6" style="text-align:right">
                 <button id="rp-save-order" class="btn btn-primary">

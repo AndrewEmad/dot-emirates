@@ -78,6 +78,8 @@ $table_prefix  = 'de_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', true);
+define('WP_DEBUG_DISPLAY', true);
+define('WP_DEBUG_LOG', true);
 define('FS_METHOD', 'direct');
 /* That's all, stop editing! Happy blogging. */
 

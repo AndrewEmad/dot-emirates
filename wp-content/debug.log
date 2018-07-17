@@ -1,0 +1,33 @@
+[17-Jul-2018 11:33:14 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 114
+[17-Jul-2018 11:49:31 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 3' at line 1 for query select * from de_blocksWHERE ID = 3 made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page
+[17-Jul-2018 11:49:31 UTC] PHP Notice:  Undefined offset: 0 in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 110
+[17-Jul-2018 11:49:31 UTC] PHP Notice:  Trying to get property of non-object in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 92
+[17-Jul-2018 12:05:24 UTC] PHP Catchable fatal error:  Object of class stdClass could not be converted to string in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 18
+[17-Jul-2018 12:05:25 UTC] PHP Catchable fatal error:  Object of class stdClass could not be converted to string in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 18
+[17-Jul-2018 12:05:49 UTC] PHP Catchable fatal error:  Object of class stdClass could not be converted to string in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 18
+[17-Jul-2018 12:05:49 UTC] PHP Catchable fatal error:  Object of class stdClass could not be converted to string in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 18
+[17-Jul-2018 12:15:30 UTC] PHP Parse error:  syntax error, unexpected 'op_verify_block' (T_STRING), expecting ',' or ')' in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 128
+[17-Jul-2018 12:17:10 UTC] WordPress database error Unknown column 'de_blocks.BlockID' in 'on clause' for query select de_blocks.* , COUNT(`order`) as 'post_count' 
+                    FROM de_blocks left join de_block_posts 
+                    on de_blocks.ID = de_blocks.BlockID 
+                    GROUP BY de_blocks.ID made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page
+[17-Jul-2018 12:17:43 UTC] WordPress database error Unknown column 'de_blocks.BlockID' in 'on clause' for query select de_blocks.* , COUNT(`order`) as 'post_count' 
+                    FROM de_blocks left outer join de_block_posts 
+                    on de_blocks.ID = de_blocks.BlockID 
+                    GROUP BY de_blocks.ID made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page
+[17-Jul-2018 12:17:44 UTC] WordPress database error Unknown column 'de_blocks.BlockID' in 'on clause' for query select de_blocks.* , COUNT(`order`) as 'post_count' 
+                    FROM de_blocks left outer join de_block_posts 
+                    on de_blocks.ID = de_blocks.BlockID 
+                    GROUP BY de_blocks.ID made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page
+[17-Jul-2018 15:15:01 UTC] WordPress database error Unknown table 'de_' for query SELECT de_.* FROM de_posts INNER JOIN de_block_posts ON de_posts.ID = de_block_posts.PostID WHERE BlockID = 3 made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page, get_edit_block_page
+[17-Jul-2018 15:16:10 UTC] WordPress database error Unknown table 'de_' for query SELECT de_.* FROM de_posts INNER JOIN de_block_posts ON de_posts.ID = de_block_posts.PostID WHERE BlockID = 1 made by do_action('toplevel_page_op_menu'), WP_Hook->do_action, WP_Hook->apply_filters, op_menu_page, get_edit_block_page
+[17-Jul-2018 15:16:43 UTC] PHP Notice:  Undefined property: stdClass::$title in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 148
+[17-Jul-2018 15:16:43 UTC] PHP Notice:  Undefined property: stdClass::$content in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/includes/ui.php on line 149
+[17-Jul-2018 16:10:43 UTC] PHP Fatal error:  Cannot redeclare search_handler() (previously declared in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php:193) in /var/www/html/dot-emirates/wp-content/themes/dot-emirates/functions.php on line 591
+[17-Jul-2018 16:19:44 UTC] PHP Parse error:  syntax error, unexpected '}' in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 194
+[17-Jul-2018 16:26:44 UTC] PHP Notice:  Array to string conversion in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 194
+[17-Jul-2018 16:26:45 UTC] PHP Notice:  Array to string conversion in /var/www/html/dot-emirates/wp-content/plugins/Organize Posts/index.php on line 194
+[17-Jul-2018 16:29:36 UTC] PHP Notice:  wpdb::prepare was called <strong>incorrectly</strong>. The query does not contain the correct number of placeholders (0) for the number of arguments passed (1). Please see <a href="https://codex.wordpress.org/Debugging_in_WordPress">Debugging in WordPress</a> for more information. (This message was added in version 4.8.3.) in /var/www/html/dot-emirates/wp-includes/functions.php on line 4161
+[17-Jul-2018 16:29:36 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%s%' at line 1 for query SELECT * FROM de_posts WHERE post_title LIKE %s% made by do_action('wp_ajax_op_search'), WP_Hook->do_action, WP_Hook->apply_filters, op_search_handler
+[17-Jul-2018 16:29:36 UTC] PHP Notice:  wpdb::prepare was called <strong>incorrectly</strong>. The query does not contain the correct number of placeholders (0) for the number of arguments passed (1). Please see <a href="https://codex.wordpress.org/Debugging_in_WordPress">Debugging in WordPress</a> for more information. (This message was added in version 4.8.3.) in /var/www/html/dot-emirates/wp-includes/functions.php on line 4161
+[17-Jul-2018 16:29:36 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%s%' at line 1 for query SELECT * FROM de_posts WHERE post_title LIKE %s% made by do_action('wp_ajax_op_search'), WP_Hook->do_action, WP_Hook->apply_filters, op_search_handler

@@ -1,0 +1,135 @@
+.portlet-header {
+    padding: 0.2em 0.3em;
+    position: relative;
+    overflow: hidden;
+    height:30px;
+    cursor:move
+  }
+  
+  .portlet-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -8px;
+  }
+  
+  .portlet-content {
+    padding: 0.4em;
+    height:150px;
+    overflow: hidden;
+  }
+  
+  .portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 85px;
+
+  }
+
+  .portlet{
+      overflow:hidden;
+      margin-bottom:10px
+  }
+  .portlet .row{
+      margin:0;
+  }
+
+.post-content,.img{
+   padding:0;
+   border:1px solid #eee;
+   height:85px
+}
+.header{
+    margin:50px 0px
+}
+.header h6{
+    margin-left:10px
+}
+
+.post-id{
+  position: absolute;
+  z-index: 10;
+  border:1px solid rgb(206, 204, 204);
+  border-radius: 2px;
+  background: #eee;
+  margin-top:63px;
+  font-size:12px;
+  font-weight: bolder;
+  padding:1px
+}
+
+.custom-select-sm{
+    width:100px !important;
+    padding-left:8px !important;
+}
+
+.block-title{
+    font-size:20px;
+    background: #eee;
+    margin-right: -15px;
+    margin-left: 15px;
+    padding-top: 5px;
+
+}
+
+.block-title span{
+    font-weight: bolder;
+    padding:5px;
+
+}
+
+.content{
+    height:972px;
+    margin-top:1px;
+    border:1px solid #ddd;
+    border-radius:5px;
+    padding:0px
+}
+
+.sortable{
+    border-left:1px solid #ddd;
+    height:970px;
+    padding:5px;
+}
+
+.number{
+    height: 70px;
+    font-size: 20px;
+    text-align: center;
+    background: #eee;
+    padding-top: 33px;
+    padding-bottom:62px;
+    margin-right: -30px;
+    border:1px solid #ddd
+}
+
+.btn-primary{
+    margin-top:15px
+}
+
+.results{
+    position:absolute;
+    z-index: 10;
+    background: #fff;;
+    border: 1px solid #eee;
+    width:150%;
+    padding:2px;
+    right:0;
+    margin-right:15px
+}
+.result{
+    border:1px solid #ddd;
+    font-size:15px;
+    padding:2px;
+    overflow:hidden;
+    height:55px;
+
+}
+.result img{
+    width:17%;
+    height:50px
+}
+.result:hover{
+    background: #eee;
+
+}

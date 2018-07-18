@@ -9,41 +9,36 @@
 include "includes/functions.php";
 include "includes/ui.php";
 
- define('BLOCKS_TABLE_NAME', 'blocks');
- define('RELATION_TABLE_NAME', 'block_posts');
+define('BLOCKS_TABLE_NAME', 'blocks');
+define('RELATION_TABLE_NAME', 'block_posts');
 
- if (!function_exists('add_action')) {
+if (!function_exists('add_action')) {
     echo 'Not Allowed !';
 }
 
-// Setup
 
-// Functions
-
-// Check WP version
+// Check WP version & create tables
 function op_activate_plugin()
 {
     if (version_compare(get_bloginfo('version'), '4.5', '<')) {
         wp_die(__('Your wordpress version is not supported !'));
     }
     global $table_prefix, $wpdb;
-    $wp_track_table = $table_prefix . BLOCKS_TABLE_NAME ;
+    $wp_track_table = $table_prefix . BLOCKS_TABLE_NAME;
     #Check to see if the table exists already, if not, then create it
-    if($wpdb->get_var( "show tables like '".$wp_track_table."'" ) != $wp_track_table)
-    {
+    if ($wpdb->get_var("show tables like '" . $wp_track_table . "'") != $wp_track_table) {
 
-        $sql = "CREATE TABLE `". $wp_track_table . "` ( ";
+        $sql = "CREATE TABLE `" . $wp_track_table . "` ( ";
         $sql .= "  `ID`  bigint(20) unsigned  NOT NULL primary key AUTO_INCREMENT, ";
         $sql .= "  `Name`  varchar(128) NOT NULL, ";
         $sql .= "  `Date`  DATETIME DEFAULT CURRENT_TIMESTAMP ";
         $sql .= ")";
-        require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
+        require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
         dbDelta($sql);
     }
-    $wp_track_table = $table_prefix . RELATION_TABLE_NAME ;
-    if($wpdb->get_var( "show tables like '".$wp_track_table."'" ) != $wp_track_table)
-    {
-        $sql = "CREATE TABLE `". $wp_track_table . "` ( ";
+    $wp_track_table = $table_prefix . RELATION_TABLE_NAME;
+    if ($wpdb->get_var("show tables like '" . $wp_track_table . "'") != $wp_track_table) {
+        $sql = "CREATE TABLE `" . $wp_track_table . "` ( ";
         $sql .= "  `PostID`  bigint(20) unsigned  NOT NULL, ";
         $sql .= "  `BlockID`  bigint(20) unsigned  NOT NULL, ";
         $sql .= "  `Order`  int(128) NOT NULL, ";
@@ -51,7 +46,7 @@ function op_activate_plugin()
         $sql .= "   FOREIGN KEY (PostID) REFERENCES " . $table_prefix . "posts(ID),";
         $sql .= "   FOREIGN KEY (BlockID) REFERENCES " . $table_prefix . BLOCKS_TABLE_NAME . "(ID)";
         $sql .= ")";
-        require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
+        require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
         dbDelta($sql);
     }
 }
@@ -67,7 +62,7 @@ function op_menu()
         'op_menu',
         'op_menu_page'
     );
-    
+
 
 }
 
@@ -103,118 +98,125 @@ function admin_enqueue()
 // Admin Plugin Page
 function op_menu_page()
 {
-    global $wpdb,$table_prefix;
-    if(isset($_GET['block_id']) && is_numeric($_GET['block_id'])){
-        $result = $wpdb->get_results('select * from '.$table_prefix.BLOCKS_TABLE_NAME.' WHERE ID = '.$_GET['block_id']);
-        if(sizeof($result) != 0) {
+    global $wpdb, $table_prefix;
+    if (isset($_GET['block_id']) && is_numeric($_GET['block_id'])) {
+        $result = $wpdb->get_results('select * from ' . $table_prefix . BLOCKS_TABLE_NAME . ' WHERE ID = ' . $_GET['block_id']);
+        if (sizeof($result) != 0) {
             get_edit_block_page($result[0]);
             return;
         }
 
     }
-    $table_name= $table_prefix.BLOCKS_TABLE_NAME;
+    $table_name = $table_prefix . BLOCKS_TABLE_NAME;
 
     $result = $wpdb->get_results(
-        'select '.$table_name.'.* , COUNT(`order`) as \'post_count\' 
-                    FROM '.$table_name.' left outer join de_block_posts 
-                    on '.$table_name.'.ID = '.$table_prefix.RELATION_TABLE_NAME.'.BlockID 
-                    GROUP BY '.$table_name.'.ID');
+        'select ' . $table_name . '.* , COUNT(`order`) as \'post_count\' 
+                    FROM ' . $table_name . ' left outer join de_block_posts 
+                    on ' . $table_name . '.ID = ' . $table_prefix . RELATION_TABLE_NAME . '.BlockID 
+                    GROUP BY ' . $table_name . '.ID');
 
     get_menu_page($result);
 }
 
 
 // Add New Block
-function op_add_block(){
+function op_add_block()
+{
     check_admin_referer('op_verify_block');
-    $name        = sanitize_text_field($_POST['op_block_name']);
-    global $wpdb,$table_prefix;
-    $wpdb->insert($table_prefix.BLOCKS_TABLE_NAME,array(
-            'Name'      => $name
+    $name = sanitize_text_field($_POST['op_block_name']);
+    global $wpdb, $table_prefix;
+    $wpdb->insert($table_prefix . BLOCKS_TABLE_NAME, array(
+        'Name' => $name
     ));
-    wp_redirect(admin_url()."/admin.php?page=op_menu&&block_id=".$wpdb->insert_id);
+    wp_redirect(admin_url() . "/admin.php?page=op_menu&&block_id=" . $wpdb->insert_id);
 }
-
 
 
 // Enqueue scripts for reorder
 function op_scripts()
 {
-
-    // register our main script but do not enqueue it yet
-    wp_register_script('save_order',  plugins_url('/assets/js/save-order.js', __FILE__), array('jquery'));
-
-    // now the most interesting part
-    // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
-    // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+    wp_register_script('save_order', plugins_url('/assets/js/save-order.js', __FILE__), array('jquery'));
     wp_localize_script('save_order', 'reorder_params', array(
         'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
     ));
-
     wp_enqueue_script('save_order');
 }
-
 
 // Ajax Handler for reorder posts
 function op_handler()
 {
-    global $wpdb,$table_prefix;
+    global $wpdb, $table_prefix;
+
     $array = $_POST['elements'];
     $size = sizeof($_POST['elements']);
+    for ($i = 0; $i < $size; $i++) {
+        if($array[$i]['order'] == -1){
+            $wpdb->delete($table_prefix . RELATION_TABLE_NAME,array(
+               'PostID'         => $array[$i]['post_id'],
+                'BlockID'       => $array[$i]['block_id']
+            ));
+        }
+        else {
+            $wpdb->replace($table_prefix . RELATION_TABLE_NAME, array(
+                'PostID'            => $array[$i]['post_id'],
+                'BlockID'           => $array[$i]['block_id'],
+                'Order'             => $array[$i]['order']
+            ));
+        }
+    }
+}
+
+// Enqueue Scripts for Search
+function op_search_scripts()
+{
+
+    wp_register_script('search', plugins_url('/assets/js/search.js', __FILE__), array('jquery'));
+    wp_localize_script('search', 'search_params', array(
+        'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php' // WordPress AJAX
+
+    ));
+    wp_enqueue_script('search');
+}
+
+// Search ajax handler
+function op_search_handler()
+{
+    global $wpdb, $table_prefix;
+    $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false), 'objects');
+    $query = "SELECT ID, post_title, post_content FROM ".$table_prefix.
+        "posts WHERE post_title LIKE '%".$_POST['title'].
+        "%' AND ID NOT IN(SELECT PostID FROM ".$table_prefix.RELATION_TABLE_NAME.
+        " WHERE BlockID = ".$_POST['block_id']." )";
+    $size = sizeof($post_types);
+    if ($post_types) {
+        $query.=" AND post_type IN (";
+        $cnt =0 ;
+        foreach ($post_types as $type) {
+            $query.= "'".$type->name."'";
+            if($cnt++ < $size - 1){
+                $query.=", ";
+            }
+        }
+        $query .= $post_types[$size-1].") ";
+    }
+
+    $query.=" ORDER BY ID DESC LIMIT 0, 10";
+    $res = $wpdb->get_results($query);
+    $size = sizeof($res);
+    $response = [];
     for($i=0;$i<$size;$i++){
-        $wpdb->replace($table_prefix.TABLE_NAME, array(
-            'ID'      => $array[$i]['id'],
-            'order'   => $array[$i]['order']*-1
-        ));    
+        $response[] = array(
+            'post_title'            => mb_substr($res[$i]->post_title,0,130),
+            'post_content'          => mb_substr($res[$i]->post_content,0,250),
+            'ID'                    => $res[$i]->ID,
+            'img'                   => get_the_post_thumbnail_url($res[$i]->ID)
+
+        );
     }
+    wp_send_json($response);
+
 }
 
-function op_search_scripts() {
-
-    // register our main script but do not enqueue it yet
-    wp_register_script( 'search', plugins_url('/assets/js/search.js',__FILE__), array('jquery') );
-
-    // now the most interesting part
-    // we have to pass parameters to loadmore.js script but we can get the parameters values only in PHP
-    // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
-    wp_localize_script( 'search', 'search_params', array(
-        'ajaxurl'   => site_url() . '/wp-admin/admin-ajax.php' // WordPress AJAX
-
-    ) );
-
-    wp_enqueue_script( 'search' );
-}
-
-
-function op_search_handler(){
-
-    global $wpdb,$table_prefix;
-    $query = $wpdb->prepare('SELECT ID, post_title, post_content FROM '.$table_prefix.'posts WHERE post_title LIKE %s',array("%".$_POST['title']."%"));
-    $res=$wpdb->get_results($query);
-    die(json_encode($res));
-}
-
-
-
-
-
-function AIOThemes_joinPOSTMETA_to_WPQuery($join) {
-    global $wp_query, $wpdb,$table_prefix;
-    if(isset($wp_query->query_vars["op_order"]) && $wp_query->query_vars["op_order"] == 1) {
-        $join .= "LEFT OUTER JOIN " . $table_prefix . TABLE_NAME ." ON ".$table_prefix."posts.ID = ".$table_prefix . TABLE_NAME . ".ID";
-    }
-    return $join;
-}
-
-function edit_posts_orderby($orderby_statement) {
-    global $wp_query, $wpdb,$table_prefix;
-    if(isset($wp_query->query_vars["op_order"]) && $wp_query->query_vars["op_order"] == 1) {
-        $orderby_statement = $table_prefix . TABLE_NAME.".order DESC";
-    }
-    return $orderby_statement;
-}
-add_filter('posts_join', 'AIOThemes_joinPOSTMETA_to_WPQuery');
-add_filter('posts_orderby', 'edit_posts_orderby');
 
 // Hooks
 register_activation_hook(__FILE__, 'op_activate_plugin');

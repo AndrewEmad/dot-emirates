@@ -1,4 +1,5 @@
 <?php
+
 function get_blocks_table($blocks){
     ?>
 
@@ -94,14 +95,10 @@ function get_menu_page($blocks){
 
 function get_edit_block_page($block){
 
-    global $wpdb,$table_prefix;
-    $result = $wpdb->get_results(
-        'SELECT '.$table_prefix.'posts.* FROM '.
-        $table_prefix.'posts INNER JOIN '.$table_prefix.RELATION_TABLE_NAME.
-        ' ON '.$table_prefix.'posts.ID = '.$table_prefix.RELATION_TABLE_NAME.'.PostID WHERE BlockID = '.$block->ID
-        );
+    $result = get_block_posts($block->ID);
 
     ?>
+    <div class="alert alert-success" style="display:none">Saved!</div>
     <div class="container">
         <div class="header row">
             <div class="col-6">
@@ -120,13 +117,13 @@ function get_edit_block_page($block){
             <div class="col-8 block-title"><span>Block: </span><span><?php echo $block->Name ?></span></div>
             <div class="col-4">
                 <input type="text" placeholder="Search for posts to add ..." class="form-control" id="op_post_search" />
-                <div class="results">
+                <div class="results" style="display: none">
 
                 </div>
 
             </div>
         </div>
-        <div class="content">
+        <div class="op-content">
             <div class="row">
                 <div class="col-md-1 col-2">
                     <div class="number">1</div>
@@ -141,16 +138,16 @@ function get_edit_block_page($block){
                     <div class="number">10</div>
                 </div>
                 <div class="col-md-11 col-10">
-                    <div id="sortable" class="sortable">
+                    <div id="sortable" class="sortable" data-block-id="<?php echo $block->ID ?>">
                     <?php foreach($result as $post){?>
                         <div class="portlet" id="<?php echo $post->ID ?>"
-                             data-index = "1" data-oldindex = "1" data-newindex = "1">
+                             data-index = "<?php echo $post->Order ?>" data-newindex = "<?php echo $post->Order ?>">
                             <div class="row">
                                 <div class="post-id"><?php echo $post->ID ?></div>
                                 <img class="img col-md-1 col-2" src="<?php echo get_the_post_thumbnail_url($post->ID) ?>" />
                                 <div class="post-content col-md-11 col-10">
-                                    <div class="portlet-header"><?php echo $post->post_title ?></div>
-                                    <div class="portlet-content"><?php echo $post->post_content ?></div>
+                                    <div class="portlet-header"><span class="title"><?php echo mb_substr($post->post_title,0,120) ?></span><span onclick = 'removePost.call(this)' class="portlet-close">x</span></div>
+                                    <div class="portlet-content"><?php echo mb_substr($post->post_content,0,250) ?></div>
                                 </div>
                             </div>
                         </div>

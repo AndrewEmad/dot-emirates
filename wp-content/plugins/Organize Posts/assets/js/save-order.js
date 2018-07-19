@@ -5,13 +5,15 @@ jQuery(function($){
         for(var i=0;i<elements.length;++i){
                 updated.push({
                     'post_id': $(elements[i]).attr("id"),
-                    'block_id': $("#sortable").attr('data-block-id'),
                     'order': $(elements[i]).attr("data-newindex")
                 })
         }
         var data = {
 			'action': 'reorder',
-            'elements' : updated
+            'elements' : updated,
+            'block_name': $('#block-name').attr('value'),
+            'block_id': $("#sortable").attr('data-block-id'),
+            'img_id': $('#featured-image img').attr('data-id') || ""
         };
 		$.ajax({
 			url : reorder_params.ajaxurl, // AJAX handler
@@ -20,6 +22,7 @@ jQuery(function($){
 			
 			success : function( data ){
 				if(data) {
+                    window.scrollTo(0, 0);
 					$(".alert").show(100);
                 }
             }

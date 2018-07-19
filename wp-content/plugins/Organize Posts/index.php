@@ -31,7 +31,9 @@ function op_activate_plugin()
         $sql = "CREATE TABLE `" . $wp_track_table . "` ( ";
         $sql .= "  `ID`  bigint(20) unsigned  NOT NULL primary key AUTO_INCREMENT, ";
         $sql .= "  `Name`  varchar(128) NOT NULL, ";
-        $sql .= "  `Date`  DATETIME DEFAULT CURRENT_TIMESTAMP ";
+        $sql .= "  `Date`  DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+        $sql .= "  `Slug`  varchar(128), ";
+        $sql .= "  `FeaturedImgID`  bigint(20)";
         $sql .= ")";
         require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
         dbDelta($sql);
@@ -43,8 +45,8 @@ function op_activate_plugin()
         $sql .= "  `BlockID`  bigint(20) unsigned  NOT NULL, ";
         $sql .= "  `Order`  int(128) NOT NULL, ";
         $sql .= "   PRIMARY KEY (PostID , BlockID),";
-        $sql .= "   FOREIGN KEY (PostID) REFERENCES " . $table_prefix . "posts(ID),";
-        $sql .= "   FOREIGN KEY (BlockID) REFERENCES " . $table_prefix . BLOCKS_TABLE_NAME . "(ID)";
+        $sql .= "   FOREIGN KEY (PostID) REFERENCES " . $table_prefix . "posts(ID) ON DELETE CASCADE,";
+        $sql .= "   FOREIGN KEY (BlockID) REFERENCES " . $table_prefix . BLOCKS_TABLE_NAME . "(ID) ON DELETE CASCADE";
         $sql .= ")";
         require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
         dbDelta($sql);
@@ -55,15 +57,13 @@ function op_activate_plugin()
 // Register Admin Menu
 function op_menu()
 {
-    add_menu_page(
-        'Organize Posts',
-        'Organize Posts',
-        'activate_plugins',
-        'op_menu',
-        'op_menu_page'
-    );
-
-
+    add_submenu_page('edit.php','Organize Posts', 'Organize Posts', 'activate_plugins', 'organize_posts', 'op_menu_page');
+    $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false), 'objects');
+    foreach($post_types as $type){
+        if($type->name != 'post'){
+            add_submenu_page('edit.php?post_type='.$type->name,'Organize '.$type->labels->name, 'Organize '.$type->labels->name, 'activate_plugins', 'organize_'.$type->rewrite['slug'], 'op_menu_page');
+        }
+    }
 }
 
 // Enqueue Styles & Scripts
@@ -84,14 +84,17 @@ function admin_enqueue()
     wp_register_script('op_jquery_dataTable', plugins_url('/assets/js/jquery.dataTables.min.js', __FILE__), array('jquery'), false, true);
     wp_register_script('op_jquery_dataTable_bootstrap', plugins_url('/assets/js/dataTables.bootstrap4.min.js', __FILE__), array('jquery'), false, true);
     wp_register_script('op_dataTable', plugins_url('/assets/js/datatables.min.js', __FILE__), array('jquery'), false, true);
+    wp_register_script('op_nice_scroll', plugins_url('/assets/js/jquery.nicescroll.min.js', __FILE__), array('jquery'), false, true);
     wp_register_script('op_script', plugins_url('/assets/js/script.js', __FILE__), array('jquery'), false, true);
 
     wp_enqueue_script('op_bootstrap');
-    wp_enqueue_script('op_script');
     wp_enqueue_script('op_jquery_ui');
     wp_enqueue_script('op_datatable');
     wp_enqueue_script('op_jquery_dataTable');
     wp_enqueue_script('op_jquery_dataTable_bootstrap');
+    wp_enqueue_script('op_nice_scroll');
+    wp_enqueue_script('op_script');
+    wp_enqueue_media();
 
 }
 
@@ -126,10 +129,26 @@ function op_add_block()
     $name = sanitize_text_field($_POST['op_block_name']);
     global $wpdb, $table_prefix;
     $wpdb->insert($table_prefix . BLOCKS_TABLE_NAME, array(
-        'Name' => $name
+        'Name'  =>  $name,
+        'Slug'  =>  sanitize_title($name).'-'.substr(md5(microtime()),0,3)
     ));
-    wp_redirect(admin_url() . "/admin.php?page=op_menu&&block_id=" . $wpdb->insert_id);
+
+    wp_redirect(admin_url() . "edit.php?page=" . $_GET['page'] . "&block_id=" . $wpdb->insert_id
+        . (isset($_GET['post_type']) ? "&post_type=" . $_GET['post_type'] : ""));
 }
+
+// Remove Block
+function op_remove_block()
+{
+    check_admin_referer('op_verify_block');
+    global $wpdb, $table_prefix;
+    $wpdb->delete($table_prefix . BLOCKS_TABLE_NAME, array(
+        'ID'  =>  $_POST['id']
+    ));
+
+    wp_redirect(admin_url() . "edit.php?page=" . $_GET['page'] . (isset($_GET['post_type']) ? "&post_type=" . $_GET['post_type'] : ""));
+}
+
 
 
 // Enqueue scripts for reorder
@@ -146,20 +165,26 @@ function op_scripts()
 function op_handler()
 {
     global $wpdb, $table_prefix;
-
     $array = $_POST['elements'];
     $size = sizeof($_POST['elements']);
+    $wpdb->update($table_prefix.BLOCKS_TABLE_NAME, array(
+        'Name'          => $_POST['block_name'],
+        'FeaturedImgID' => $_POST['img_id']
+
+    ),array(
+        'ID'            => $_POST['block_id']
+    ));
     for ($i = 0; $i < $size; $i++) {
         if($array[$i]['order'] == -1){
             $wpdb->delete($table_prefix . RELATION_TABLE_NAME,array(
                'PostID'         => $array[$i]['post_id'],
-                'BlockID'       => $array[$i]['block_id']
+               'BlockID'       => $_POST['block_id'],
             ));
         }
         else {
             $wpdb->replace($table_prefix . RELATION_TABLE_NAME, array(
                 'PostID'            => $array[$i]['post_id'],
-                'BlockID'           => $array[$i]['block_id'],
+                'BlockID'           => $_POST['block_id'],
                 'Order'             => $array[$i]['order']
             ));
         }
@@ -182,25 +207,12 @@ function op_search_scripts()
 function op_search_handler()
 {
     global $wpdb, $table_prefix;
-    $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false), 'objects');
+    $type = isset($_POST['post_type'])&&!empty(trim($_POST['post_type']))? $_POST['post_type'] : "post";
     $query = "SELECT ID, post_title, post_content FROM ".$table_prefix.
         "posts WHERE post_title LIKE '%".$_POST['title'].
-        "%' AND ID NOT IN(SELECT PostID FROM ".$table_prefix.RELATION_TABLE_NAME.
+        "%' AND post_type = '".$type."' AND ID NOT IN(SELECT PostID FROM ".$table_prefix.RELATION_TABLE_NAME.
         " WHERE BlockID = ".$_POST['block_id']." )";
-    $size = sizeof($post_types);
-    if ($post_types) {
-        $query.=" AND post_type IN (";
-        $cnt =0 ;
-        foreach ($post_types as $type) {
-            $query.= "'".$type->name."'";
-            if($cnt++ < $size - 1){
-                $query.=", ";
-            }
-        }
-        $query .= $post_types[$size-1].") ";
-    }
-
-    $query.=" ORDER BY ID DESC LIMIT 0, 10";
+    $query.=" ORDER BY ID DESC LIMIT 0, 20";
     $res = $wpdb->get_results($query);
     $size = sizeof($res);
     $response = [];
@@ -217,6 +229,10 @@ function op_search_handler()
 
 }
 
+function remove_pages_from_search() {
+    global $wp_post_types;
+    $wp_post_types['page']->exclude_from_search = true;
+}
 
 // Hooks
 register_activation_hook(__FILE__, 'op_activate_plugin');
@@ -227,7 +243,9 @@ add_action('admin_init', 'op_scripts');
 add_action('wp_ajax_reorder', 'op_handler'); // wp_ajax_{action}
 add_action('wp_ajax_nopriv_reorder', 'op_handler'); // wp_ajax_nopriv_{action}
 add_action('admin_post_op_add_block', 'op_add_block');
+add_action('admin_post_op_remove_block', 'op_remove_block');
 add_action('wp_ajax_op_search', 'op_search_handler'); // wp_ajax_{action}
 add_action('wp_ajax_nopriv_op_search', 'op_search_handler'); // wp_ajax_nopriv_{action}
+add_action('init', 'remove_pages_from_search');
 
 ?>

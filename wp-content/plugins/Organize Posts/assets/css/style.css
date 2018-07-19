@@ -2,75 +2,79 @@
     padding: 0.2em 0.3em;
     position: relative;
     overflow: hidden;
-    height:30px;
-    cursor:move;
+    height: 30px;
+    cursor: move;
 
-  }
+}
 
-.portlet-header .title{
-    display:inline-block;
+.portlet-header .title {
+    display: inline-block;
     max-width: 90%;
 }
 
-  .portlet-toggle {
+.portlet-toggle {
     position: absolute;
     top: 50%;
     right: 0;
     margin-top: -8px;
-  }
-  
-  .portlet-content {
+}
+
+.portlet-content {
     padding: 0.4em;
-    height:150px;
+    height: 150px;
     overflow: hidden;
-  }
-  
-  .portlet-placeholder {
+    font-size:12px;
+}
+
+.portlet-placeholder {
     border: 1px dotted black;
     margin: 0 1em 1em 0;
     height: 85px;
 
-  }
-
-  .portlet{
-      overflow:hidden;
-      margin-bottom:10px
-  }
-  .portlet .row{
-      margin:0;
-  }
-
-.post-content,.img{
-   padding:0;
-   border:1px solid #eee;
-   height:85px
-}
-.header{
-    margin:50px 0px
-}
-.header h6{
-    margin-left:10px
 }
 
-.post-id{
-  position: absolute;
-  z-index: 10;
-  border:1px solid rgb(206, 204, 204);
-  border-radius: 2px;
-  background: #eee;
-  margin-top:63px;
-  font-size:12px;
-  font-weight: bolder;
-  padding:1px
+.portlet {
+    overflow: hidden;
+    margin-bottom: 10px
 }
 
-.custom-select-sm{
-    width:100px !important;
-    padding-left:8px !important;
+.portlet .row {
+    margin: 0;
 }
 
-.block-title{
-    font-size:20px;
+.post-content, .img {
+    padding: 0;
+    border: 1px solid #eee;
+    height: 73px
+}
+
+.header {
+    margin: 50px 0px
+}
+
+.header h6 {
+    margin-left: 10px
+}
+
+.post-id {
+    position: absolute;
+    z-index: 10;
+    border: 1px solid rgb(206, 204, 204);
+    border-radius: 2px;
+    background: #eee;
+    margin-top: 51px;
+    font-size: 12px;
+    font-weight: bolder;
+    padding: 1px
+}
+
+.custom-select-sm {
+    width: 100px !important;
+    padding-left: 8px !important;
+}
+
+.block-title {
+    font-size: 20px;
     background: #eee;
     margin-right: -15px;
     margin-left: 15px;
@@ -78,73 +82,88 @@
 
 }
 
-.block-title span{
+.block-title span {
     font-weight: bolder;
-    padding:5px;
+    padding: 5px;
 
 }
 
-.op-content{
-    height:972px;
-    margin-top:1px;
-    border:1px solid #ddd;
-    border-radius:5px;
-    padding:0px
+#sortable {
+    min-height: 301px;
+    padding: 10px;
+    margin-top: 1px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding-bottom: 0;
 }
 
-#sortable{
-    border-left:1px solid #ddd;
-    height:970px;
-    padding:5px;
+#sortable .no-posts{
+    width:100%;
+    height:281px;
+    text-align: center;
+    background: #eaeaea;
+    font-size:22px;
+    font-weight:bolder;
+    color:#aaa;
+    padding-top:20%;
+
 }
 
-.number{
+.number {
     height: 70px;
     font-size: 20px;
     text-align: center;
     background: #eee;
     padding-top: 32px;
-    padding-bottom:63px;
+    padding-bottom: 63px;
     margin-right: -30px;
-    border:1px solid #ddd
+    border: 1px solid #ddd
 }
 
-.btn-primary{
-    margin-top:15px
+.btn-op {
+    margin-top: 15px
 }
 
-.results{
-    position:absolute;
-    z-index: 10;
+.results {
+    position: absolute;
+    z-index: 11;
     background: #fff;;
     border: 1px solid #eee;
-    width:calc(100% - 30px);
-    padding:2px;
-    right:0;
-    margin-right:15px
+    width: calc(100% - 30px);
+    padding: 2px;
+    right: 0;
+    margin-right: 15px;
+    max-height: 285px;
+    overflow-y: scroll;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
 }
-.result{
-    border:1px solid #ddd;
-    font-size:12px;
-    padding:2px;
-    overflow:hidden;
-    height:30px;
+
+.result {
+    border: 1px solid #ddd;
+    font-size: 12px;
+    padding: 2px;
+    overflow: hidden;
+    height: 56px;
 
 }
-.result img{
-    width:14%;
-    height:25px
+
+.result img {
+    width: 60px;
+    height: 50px
 }
-.result:hover{
+
+.result:hover {
     background: #eee;
 
 }
-.result span{
-    padding:0 5px;
+
+.result span {
+    padding: 0 5px;
+    font-size: 13px;
 
 }
 
-.portlet .portlet-close{
+.portlet .portlet-close {
     float: right;
     font-size: 15px;
     color: red;
@@ -153,7 +172,54 @@
     padding: 3px;
     line-height: 0.7;
 }
-.portlet .portlet-close:hover{
+
+.portlet .portlet-close:hover {
     cursor: pointer;
     background: #fff;
 }
+.block-data{
+    margin-top:10px;
+    margin-left:5px
+}
+.block-data td{
+    width:200px;
+    font-size:14px
+
+}
+
+.block-remove{
+    text-align: center;
+    font-size:20px;
+}
+.block-remove .btn{
+    padding:7px;
+    line-height: 0.5;
+}
+
+.op-title{
+    font-weight: bold;
+    font-size:2.5rem
+}
+.block-data .key{
+    width:50px;
+    font-weight:bolder
+}
+
+#featured-image{
+    margin-top:0;
+    padding:0;
+}
+
+#featured-image .img{
+    width:100%;
+    height: 200px;
+    background: #ccc;
+}
+#featured-image .featured-img{
+    width: 100%;
+    height: 100%;
+}
+.card-footer a{
+    font-size:14px
+}
+
